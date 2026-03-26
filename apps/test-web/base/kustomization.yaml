@@ -3,8 +3,8 @@ kind: Kustomization
 
 resources:
   - namespace.yaml
-#  - ../../base/ConfigMaps/default-conf.yaml
-#  - ../../base/ConfigMaps/nginx-conf.yaml
-#  - ../../base/Deployements/test-web.yaml
-#  - ../../base/Services/service.yaml
-#  - ../../base/HTTProutes/HTTPRoute.yaml
+  - ConfigMaps/default-conf.yaml
+  - ConfigMaps/nginx-conf.yaml
+  - Deployements/test-web.yaml
+  - Services/service.yaml
+  - HTTProutes/HTTPRoute.yaml
