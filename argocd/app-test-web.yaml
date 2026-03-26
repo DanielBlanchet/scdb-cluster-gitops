@@ -4,7 +4,7 @@ metadata:
   name: test-web
   namespace: argocd
 spec:
-  project: home
+  project: test
   source:
     repoURL: git@github.com:DanielBlanchet/scdb-cluster-gitops.git
     targetRevision: main
