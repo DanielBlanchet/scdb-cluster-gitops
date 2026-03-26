@@ -5,6 +5,7 @@ resources:
   - namespace.yaml
   - ConfigMaps/default-conf.yaml
   - ConfigMaps/nginx-conf.yaml
+  - PersistentVolumeClaim/pvc-test.yaml
   - Deployements/test-web.yaml
-  - Services/service.yaml
+  - Services/test-web-svc.yaml
   - HTTProutes/HTTPRoute.yaml
