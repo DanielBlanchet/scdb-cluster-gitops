@@ -1,0 +1,5 @@
+wconfigs:
+  "harbor.home.dblanchet.net":
+    tls:
+      insecure_skip_verify: true
+

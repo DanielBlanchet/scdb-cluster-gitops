@@ -1,0 +1,16 @@
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TLSRoute
+metadata:
+  name: argocd-tls
+  namespace: argocd
+spec:
+  parentRefs:
+    - name: scdb-gateway
+      namespace: default
+      sectionName: tls
+  hostnames:
+    - argocd-k3s.home.dblanchet.net
+  rules:
+    - backendRefs:
+        - name: argocd-server
+          port: 443
