@@ -2,7 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../../base/namespaces.yaml
+  - ../../base/namespace.yaml
 #  - ../../base/ConfigMaps/default-conf.yaml
 #  - ../../base/ConfigMaps/nginx-conf.yaml
 #  - ../../base/Deployements/test-web.yaml
