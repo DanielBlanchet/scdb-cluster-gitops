@@ -1,20 +1,16 @@
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TLSRoute
 metadata:
   name: test-web-route
-  namespace: test
+  namespace: webts
 spec:
   parentRefs:
     - name: scdb-gateway
       namespace: default
-      sectionName: http
+      sectionName: tls
   hostnames:
-    - webts.dev.home.dblanchet.net
+    - webts.test.home.dblanchet.net
   rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      backendRefs:
+    - backendRefs:
         - name: webts-web-svc
-          port: 8080
+          port: 4443
