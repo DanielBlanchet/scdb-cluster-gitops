@@ -5,8 +5,5 @@ resources:
   - ../../base
   - TLSroutes/webts-prod.yml
 
-patches:
+patchesStrategicMerge:
   - Deployements/nginx-php-patch.yaml
-    target:
-      kind: Deployment
-      name: nginx-php
