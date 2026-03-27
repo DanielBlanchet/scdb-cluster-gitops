@@ -4,7 +4,7 @@ env=prod
 env=dev
 
 site=webts.${env}.home.dblanchet.net
-name=webts-web-${env}-tls
+name=webts-web-${env}-ssl
 email='daniel@dblanchet.net'
 namespace=webts
 
