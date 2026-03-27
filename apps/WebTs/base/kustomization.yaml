@@ -11,4 +11,4 @@ resources:
   - Statefulset/mysql-db-cluster.yml
   - PersistentVolumeClaim/db-backup.yml
   - CronJobs/mysql-backup.yml
-#  - Deployements/nginx-php.yml
+  - Deployements/nginx-php.yml
