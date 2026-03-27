@@ -22,4 +22,4 @@ spec:
   tls:
   - hosts:
     - webts.dev.home.dblanchet.net
-    secretName: webts-web-dev-tls
+    secretName: webts-web-dev-ssl

@@ -6,5 +6,5 @@ resources:
   - Ingress/webts-dev-ingress.yml
 #  - HTTProutes/webts-dev.yml
 
-patchesStrategicMerge:
-  - Deployements/nginx-php-patch.yaml
+#patchesStrategicMerge:
+#  - Deployements/nginx-php-patch.yaml
