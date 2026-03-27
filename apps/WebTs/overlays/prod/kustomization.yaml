@@ -7,4 +7,6 @@ resources:
 
 patches:
   - Deployements/nginx-php-patch.yaml
-
+    target:
+      kind: Deployment
+      name: nginx-php
