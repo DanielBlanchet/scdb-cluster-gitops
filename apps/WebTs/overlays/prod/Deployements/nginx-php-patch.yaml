@@ -8,7 +8,7 @@ spec:
       volumes:
         - name: webts-ssl
           secret:
-            secretName: webts-web-prod-ssl
+            secretName: webts-web-prod-tls
             defaultMode: 420
       containers:
         - name: nginx-php
