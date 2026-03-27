@@ -22,3 +22,12 @@ kubectl create -f apps/WebTs/base/Secrets/db-connection-info.yml
 kubectl create -f apps/WebTs/base/Secrets/my-cnf-backup.yml
 kubectl create -f apps/WebTs/base/Secrets/webts-config-cfg.yml
 
+# DB create/restore
+
+kubectl exec -it mysql-db-0 -- mysql -u root -p
+create user webts identified by 'my_pass';
+GRANT PROCESS ON *.* TO `webts`@`%`;
+GRANT ALL PRIVILEGES ON `TimeSheets`.* TO `webts`@`%`;
+create schema TimeSheets;
+
+# Recover db from latest backup.

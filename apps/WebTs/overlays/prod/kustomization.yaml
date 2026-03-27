@@ -3,4 +3,4 @@ kind: Kustomization
 
 resources:
   - ../../base
-  - HTTProutes/webts-prod.yml
+  - TLSroutes/webts-prod.yml
