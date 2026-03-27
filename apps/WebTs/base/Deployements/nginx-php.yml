@@ -39,7 +39,7 @@ spec:
           value: tsweb
         image: harbor.home.dblanchet.net/scdb/nginx-php:v4.0.5
         imagePullPolicy: IfNotPresent
-        name: ngnix-php
+        name: nginx-php
         ports:
         - containerPort: 8052
           protocol: TCP
