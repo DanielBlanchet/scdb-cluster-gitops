@@ -4,3 +4,7 @@ kind: Kustomization
 resources:
   - ../../base
   - TLSroutes/webts-prod.yml
+
+patchesStrategicMerge:
+  - Deployements/nginx-php-patch.yaml
+

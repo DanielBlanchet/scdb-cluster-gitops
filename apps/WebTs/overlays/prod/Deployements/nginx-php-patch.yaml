@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-php
+  namespace: webts
+spec:
+  template:
+    spec:
+      volumes:
+        - name: webts-ssl
+          secret:
+            secretName: webts-web-prod-ssl
+            defaultMode: 420
+      containers:
+        - name: nginx-php
+          volumeMounts:
+            - name: webts-ssl
+              mountPath: /var/lib/appl/ssl
+              readOnly: true
