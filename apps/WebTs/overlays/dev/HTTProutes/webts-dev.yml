@@ -1,7 +1,7 @@
 apiVersion: gateway.networking.k8s.io/v1alpha2
 kind: TLSRoute
 metadata:
-  name: test-web-route
+  name: dev-web-route
   namespace: webts
 spec:
   parentRefs:
@@ -9,7 +9,7 @@ spec:
       namespace: default
       sectionName: tls
   hostnames:
-    - webts.test.home.dblanchet.net
+    - webts.dev.home.dblanchet.net
   rules:
     - backendRefs:
         - name: webts-web-svc
