@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-backup
+spec:
+  accessModes:
+    - ReadWriteOnce
+#  storageClassName: nfs-storage
+  resources:
+    requests:
+      storage: 50Gi

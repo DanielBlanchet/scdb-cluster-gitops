@@ -9,5 +9,6 @@ resources:
   - Services/mysql-db-svc.yml
   - Services/web-svc.yml
   - Statefulset/mysql-db-cluster.yml
+  - PersistentVolumeClaim/db-backup.yml
   - CronJobs/mysql-backup.yml
 #  - Deployements/nginx-php.yml
