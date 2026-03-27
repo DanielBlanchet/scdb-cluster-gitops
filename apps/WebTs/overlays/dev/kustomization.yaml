@@ -3,4 +3,8 @@ kind: Kustomization
 
 resources:
   - ../../base
-  - HTTProutes/webts-dev.yml
+  - Ingress/webts-dev-ingress.yml
+#  - HTTProutes/webts-dev.yml
+
+patchesStrategicMerge:
+  - Deployements/nginx-php-patch.yaml
