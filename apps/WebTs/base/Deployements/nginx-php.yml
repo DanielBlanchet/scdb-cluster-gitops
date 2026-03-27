@@ -37,7 +37,7 @@ spec:
           value: webts
         - name: WebTS_PW
           value: tsweb
-        image: harbor.home.dblanchet.net/scdb/nginx-php:v4.0.6
+        image: harbor.home.dblanchet.net/scdb/nginx-php:v4.0.7
         imagePullPolicy: IfNotPresent
         name: nginx-php
         ports:

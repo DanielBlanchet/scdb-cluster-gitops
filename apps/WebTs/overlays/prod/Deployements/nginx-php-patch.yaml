@@ -14,5 +14,5 @@ spec:
         - name: nginx-php
           volumeMounts:
             - name: webts-ssl
-              mountPath: /etc/nginx
+              mountPath: /var/lib/appl/ssl
               readOnly: true
