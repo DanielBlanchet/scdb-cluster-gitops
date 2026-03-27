@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - Namespaces/namespace.yaml
+  - ConfigMaps/backup-db-sh.yml
+  - ConfigMaps/my-cnf.yml
+  - ConfigMaps/mysqld-sh.yml
+  - Services/mysql-db-svc.yml
+  - Services/web-svc.yml
+  - Statefulset/mysql-db-cluster.yml
+  - CronJobs/mysql-backup.yml
+#  - Deployements/nginx-php.yml
