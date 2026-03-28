@@ -16,3 +16,7 @@ kubectl create secret tls ${name} \
   --key=./${site}.key \
   -n $namespace
 
+# Create secret
+
+kubectl create -f apps/Crypto-Trader/base/Secrets/my-cnf-backup.yaml
+kubectl create -f apps/Crypto-Trader/base/Secrets/mysql-db-connect.yml

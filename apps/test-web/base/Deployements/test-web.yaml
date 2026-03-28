@@ -56,6 +56,9 @@ spec:
         - name: nginx-conf
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
+        - name: index-html
+          mountPath: /var/nginx/html/index.html
+          subPath: index.html
       nodeSelector:
         kubernetes.io/os: linux
         node-role.kubernetes.io/worker: worker
@@ -82,3 +85,9 @@ spec:
             items:
             - key: nginx.conf
               path: nginx.conf
+        - name: index-html
+          configMap:
+            name: index-html
+            items:
+            - key: index.html
+              path: index.html

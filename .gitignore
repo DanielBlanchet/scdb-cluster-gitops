@@ -3,3 +3,6 @@ scdb-k3s.conf
 apps/WebTs/base/Secrets/db-connection-info.yml
 apps/WebTs/base/Secrets/my-cnf-backup.yml
 apps/WebTs/base/Secrets/webts-config-cfg.yml
+apps/Crypto-Trader/base/Secrets/mysql-db-connect.yml
+apps/Crypto-Trader/base/Secrets/web-config-cfg.yml
+apps/Crypto-Trader/base/Secrets/my-cnf-backup.yaml
