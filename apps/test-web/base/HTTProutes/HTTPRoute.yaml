@@ -9,7 +9,7 @@ spec:
       namespace: default
       sectionName: http
   hostnames:
-    - k3s-test-web.home.dblanchet.net
+    - test-web.test.home.dblanchet.net
   rules:
     - matches:
         - path:
