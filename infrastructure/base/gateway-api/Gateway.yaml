@@ -30,7 +30,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: webts-web-dev-ssl
+            name: test-web-prod-ssl
       allowedRoutes:
         namespaces:
           from: All
