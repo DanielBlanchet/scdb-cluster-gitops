@@ -9,7 +9,7 @@ spec:
       namespace: default
       sectionName: http
   hostnames:
-    - test-web.test.home.dblanchet.net
+    - test-web.prod.home.dblanchet.net
   rules:
     - matches:
         - path:
