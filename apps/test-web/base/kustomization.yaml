@@ -9,4 +9,4 @@ resources:
   - PersistentVolumeClaim/pvc-test.yaml
   - Deployements/test-web.yaml
   - Services/test-web-svc.yaml
-  - HTTProutes/HTTPRoute.yaml
+#  - HTTProutes/HTTPRoute.yaml
