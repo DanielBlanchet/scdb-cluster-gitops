@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: mysql-db
+  name: mysql-db
+spec:
+#  persistentVolumeClaimRetentionPolicy:
+#    whenDeleted: Retain
+#    whenScaled: Retain
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: mysql-db
+  serviceName: mysql-db-svc
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: mysql-db
+    spec:
+      containers:
+      - env:
+        - name: AUTHENTICATION
+          value: mysql_native_password
+        - name: CHARSET
+          value: latin1
+        - name: MYSQL_ROOT_PASSWORD
+          value: test
+        - name: MYSQL_DEFAULTS
+          value: /etc/my.cfg
+        - name: START_CMD
+          value: /opt/mysql/mysqld.sh mysqld
+        - name: TZ
+          value: America/Montreal
+        image: harbor.home.dblanchet.net/scdb/mysql-cluster:v3.5.1
+        imagePullPolicy: IfNotPresent
+        name: mysql-db
+        ports:
+        - containerPort: 3306
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: data-db
+        - mountPath: /etc/my.cnf
+          name: my-cnf
+          subPath: my.cnf
+        - mountPath: /opt/mysql/mysqld.sh
+          name: mysqld-sh
+          subPath: mysqld.sh
+      dnsPolicy: ClusterFirst
+      hostname: mysql-db
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: my.cnf
+            mode: 420
+            path: my.cnf
+          name: my-cnf
+        name: my-cnf
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: mysqld.sh
+            mode: 493
+            path: mysqld.sh
+          name: mysqld-sh
+        name: mysqld-sh
+  updateStrategy:
+    rollingUpdate:
+      partition: 0
+    type: RollingUpdate
+  volumeClaimTemplates:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      creationTimestamp: null
+      name: data-db
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 30Gi
+      volumeMode: Filesystem
+    status:
+      phase: Pending

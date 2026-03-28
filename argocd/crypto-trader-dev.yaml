@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: crypto-trader-dev
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'git@github.com:DanielBlanchet/crypto-trader.git'
+    targetRevision: v2.1.7
+    path: Apps
+    directory:
+      recurse: true
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: crypto-trader
+  syncPolicy:
+    automated:
+      enabled: false
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

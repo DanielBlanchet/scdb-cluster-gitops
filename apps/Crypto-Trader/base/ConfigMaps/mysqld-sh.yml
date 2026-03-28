@@ -1,0 +1,126 @@
+apiVersion: v1
+data:
+  mysqld.sh: "#!/bin/bash \n# Copyright (c) 2017, Oracle and/or its affiliates. All
+    rights reserved.\n#\n# This program is free software; you can redistribute it
+    and/or modify\n# it under the terms of the GNU General Public License as published
+    by\n# the Free Software Foundation; version 2 of the License.\n#\n# This program
+    is distributed in the hope that it will be useful,\n# but WITHOUT ANY WARRANTY;
+    without even the implied warranty of\n# MERCHANTABILITY or FITNESS FOR A PARTICULAR
+    PURPOSE.  See the\n# GNU General Public License for more details.\n#\n# You should
+    have received a copy of the GNU General Public License\n# along with this program;
+    if not, write to the Free Software\n# Foundation, Inc., 51 Franklin St, Fifth
+    Floor, Boston, MA  02110-1301 USA\n\n#set -x \n\nif [ -e /var/lib/appl/db-env
+    ]\nthen\n  echo \"[Entrypoint] Load /var/lib/appl/db-env\"\n  . /var/lib/appl/db-env\nfi\n\n#
+    # SIGTERM-handler\nsighdl() {\n\ttouch /tmp/stop\n}\n\n# # setup handlers\n# trap
+    'term_handler' 15\ntrap sighdl SIGKILL SIGINT SIGTERM\n\nset -e\nversion=`/usr/sbin/mysqld
+    --version  | awk '{print $3}'`\necho \"[Entrypoint] MySQL Docker Image $version
+    $PKGversion\"\n# Fetch value from server config\n# We use mysqld --verbose --help
+    instead of my_print_defaults because the\n# latter only show values present in
+    config files, and not server defaults\n_get_config() {\n\tlocal conf=\"$1\"; shift\n\t\"$@\"
+    --verbose --help 2>/dev/null | grep \"^$conf\" | awk '$1 == \"'\"$conf\"'\" {
+    print $2; exit }'\n}\n\nUSER=`id -un`\n\nif [ \"$USER\" == \"root\" ]\nthen\n
+    \ MYSQLUSER=\"mysql\"\nelse\n  MYSQLUSER=$USER\nfi\n\necho \"[Entrypoint] Set
+    MYSQLUSER to $MYSQLUSER\"\n\n# if [ -z \"$CHARSET\" ]\n# then\n# \tCHARSET=utf8mb4\n#
+    fi\n\n# if [ -z \"$AUTHENTICATION\" ]\n# then\n# \tSETAUTHENTICATION=\"\";\n#
+    else\n# \tSETAUTHENTICATION=\"default-authentication-plugin = $AUTHENTICATION\"\n#
+    fi\n\nif [ -f /etc/my.cnf ]\nthen\n\tlogFile=`grep log-error /etc/my.cnf |awk
+    -F= '{print $2}' |sed \"s/ //g\"`\nfi\n\n# If command starts with an option, prepend
+    mysqld\n# This allows users to add command-line options without\n# needing to
+    specify the \"mysqld\" command\nif [ \"${1:0:1}\" = '-' ]; then\n\tset -- mysqld
+    \"$@\"\nfi\n\nif [ \"$1\" = 'mysqld' ]; then\n\t# Test that the server can start.
+    We redirect stdout to /dev/null so\n\t# only the error messages are left.\n\tresult=0\n\toutput=$(\"$@\"
+    --validate-config) || result=$?\n\tif [ ! \"$result\" = \"0\" ]; then\n\t\techo
+    >&2 '[Entrypoint] ERROR: Unable to start MySQL. Please check your configuration.'\n\t\techo
+    >&2 \"[Entrypoint] $output\"\n\t\texit 1\n\tfi\n\n\t# Get config\n\tDATADIR=\"$(_get_config
+    'datadir' \"$@\")\"\n\tSOCKET=\"$(_get_config 'socket' \"$@\")\"\n\n\tif [ ! -d
+    \"$DATADIR/mysql\" ]; then\n\t\t# If the password variable is a filename we use
+    the contents of the file. We\n\t\t# read this first to make sure that a proper
+    error is generated for empty files.\n\t\tif [ -f \"$MYSQL_ROOT_PASSWORD\" ]; then\n\t\t\tMYSQL_ROOT_PASSWORD=\"$(cat
+    $MYSQL_ROOT_PASSWORD)\"\n\t\t\tif [ -z \"$MYSQL_ROOT_PASSWORD\" ]; then\n\t\t\t\techo
+    >&2 '[Entrypoint] Empty MYSQL_ROOT_PASSWORD file specified.'\n\t\t\t\texit 1\n\t\t\tfi\n\t\tfi\n\t\tif
+    [ -z \"$MYSQL_ROOT_PASSWORD\" -a -z \"$MYSQL_ALLOW_EMPTY_PASSWORD\" -a -z \"$MYSQL_RANDOM_ROOT_PASSWORD\"
+    ]; then\n\t\t\techo >&2 '[Entrypoint] No password option specified for new database.'\n\t\t\techo
+    >&2 '[Entrypoint]   A random onetime password will be generated.'\n\t\t\tMYSQL_RANDOM_ROOT_PASSWORD=true\n\t\t\tMYSQL_ONETIME_PASSWORD=true\n\t\tfi\n\t\tmkdir
+    -pv \"$DATADIR\"\n\n\t\techo '[Entrypoint] Initializing database'\n\t\t\"$@\"
+    --initialize-insecure\n\t\techo '[Entrypoint] Database initialized'\n\n\t\tif
+    [ $USER == \"root\" ]\n\t\tthen\n\t\t\techo \"chown -R mysql:mysql $DATADIR\"\n\t\t\tchown
+    -R mysql:mysql $DATADIR\n\n\t\t\tif [ ! -z $logFile ]\n\t\t\tthen\n\t\t\t\tif
+    [ -f $logFile ]\n\t\t\t\tthen\n\t\t\t\techo \"chown - mysql:mysql $logFile\"\n\t\t\t\t\tchown
+    -v mysql:mysql $logFile\n\t\t\t\tfi\n\t\t\tfi\n\t\tfi\n\n\t\t\"$@\" --user=mysql
+    --daemonize --skip-networking --socket=\"$SOCKET\" --skip-ndbcluster\n\t\techo
+    \"[Entrypoint] $@ Started\"\n\t\t\n\t\t# To avoid using password on commandline,
+    put it in a temporary file.\n\t\t# The file is only populated when and if the
+    root password is set.\n\t\tPASSFILE=$(mktemp -u /var/lib/mysql-files/XXXXXXXXXX)\n\t\tinstall
+    /dev/null -m0600 -omysql -gmysql \"$PASSFILE\"\n\t\t# Define the client command
+    used throughout the script\n\t\t# \"SET @@SESSION.SQL_LOG_BIN=0;\" is required
+    for products like group replication to work properly\n\t\tmysql=( mysql --protocol=socket
+    -uroot -hlocalhost --socket=\"$SOCKET\" --init-command=\"SET @@SESSION.SQL_LOG_BIN=0;\")\n\t\techo
+    \"[Entrypoint] mysql: $mysql\"\n\n\t\tif [ ! -z \"\" ];\n\t\tthen\n\t\t\tfor i
+    in {30..0}; do\n\t\t\t\tif mysqladmin --socket=\"$SOCKET\" ping &>/dev/null; then\n\t\t\t\t\tbreak\n\t\t\t\tfi\n\t\t\t\techo
+    '[Entrypoint] Waiting for server...'\n\t\t\t\tsleep 1\n\t\t\tdone\n\t\t\tif [
+    \"$i\" = 0 ]; then\n\t\t\t\techo >&2 '[Entrypoint] Timeout during MySQL init.'\n\t\t\t\texit
+    1\n\t\t\tfi\n\t\tfi\n\n\t\tmysql_tzinfo_to_sql /usr/share/zoneinfo | \"${mysql[@]}\"
+    mysql\n\t\t\n\t\tif [ ! -z \"$MYSQL_RANDOM_ROOT_PASSWORD\" ]; then\n\t\t\tMYSQL_ROOT_PASSWORD=\"$(pwmake
+    128)\"\n\t\t\techo \"[Entrypoint] GENERATED ROOT PASSWORD: $MYSQL_ROOT_PASSWORD\"\n\t\t\techo
+    $MYSQL_ROOT_PASSWORD > ~/.mysql.pw\n\t\tfi\n\t\tif [ -z \"$MYSQL_ROOT_HOST\" ];
+    then\n\t\t\tROOTCREATE=\"ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
+    \\\n\t\t\tcreate user root identified by '${MYSQL_ROOT_PASSWORD}'; \\\n\t\t\tGRANT
+    ALL ON *.* TO root WITH GRANT OPTION ;\"\n\t\telse\n\t\t\tROOTCREATE=\"ALTER USER
+    'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}'; \\\n\t\t\tCREATE USER
+    'root'@'${MYSQL_ROOT_HOST}' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}'; \\\n\t\t\tGRANT
+    ALL ON *.* TO 'root'@'${MYSQL_ROOT_HOST}' WITH GRANT OPTION ; \\\n\t\t\tGRANT
+    PROXY ON ''@'' TO 'root'@'${MYSQL_ROOT_HOST}' WITH GRANT OPTION ; \\\n\t\t\tcreate
+    user root identified by '${MYSQL_ROOT_PASSWORD}'; \\\n\t\t\tGRANT ALL ON *.* TO
+    root WITH GRANT OPTION ;\"\n\t\tfi\n\t\t\"${mysql[@]}\" <<-EOSQL\n\t\t\tDELETE
+    FROM mysql.user WHERE user NOT IN ('mysql.infoschema', 'mysql.session', 'mysql.sys',
+    'root') OR host NOT IN ('localhost');\n\t\t\tCREATE USER 'healthchecker'@'localhost'
+    IDENTIFIED BY 'healthcheckpass';\n\t\t\t${ROOTCREATE}\n\t\t\tFLUSH PRIVILEGES
+    ;\n\t\tEOSQL\n\t\tif [ ! -z \"$MYSQL_ROOT_PASSWORD\" ]; then\n\t\t\t# Put the
+    password into the temporary config file\n\t\t\tcat >\"$PASSFILE\" <<EOF\n[client]\npassword=\"${MYSQL_ROOT_PASSWORD}\"\nEOF\n\t\t\t#mysql+=(
+    -p\"${MYSQL_ROOT_PASSWORD}\" )\n\t\tfi\n\n\t\tif [ \"$MYSQL_DATABASE\" ]; then\n\t\t\techo
+    \"CREATE DATABASE IF NOT EXISTS \\`$MYSQL_DATABASE\\` ;\" | \"${mysql[@]}\"\n\t\t\tmysql+=(
+    \"$MYSQL_DATABASE\" )\n\t\tfi\n\n\t\tif [ \"$MYSQL_USER\" -a \"$MYSQL_PASSWORD\"
+    ]; then\n\t\t\techo \"CREATE USER '\"$MYSQL_USER\"'@'%' IDENTIFIED BY '\"$MYSQL_PASSWORD\"'
+    ;\" | \"${mysql[@]}\"\n\n\t\t\tif [ \"$MYSQL_DATABASE\" ]; then\n\t\t\t\techo
+    \"GRANT ALL ON \\`\"$MYSQL_DATABASE\"\\`.* TO '\"$MYSQL_USER\"'@'%' ;\" | \"${mysql[@]}\"\n\t\t\tfi\n\n\t\telif
+    [ \"$MYSQL_USER\" -a ! \"$MYSQL_PASSWORD\" -o ! \"$MYSQL_USER\" -a \"$MYSQL_PASSWORD\"
+    ]; then\n\t\t\techo '[Entrypoint] Not creating mysql user. MYSQL_USER and MYSQL_PASSWORD
+    must be specified to create a mysql user.'\n\t\tfi\n\t\techo\n\t\tfor f in /docker-entrypoint-initdb.d/*;
+    do\n\t\t\tcase \"$f\" in\n\t\t\t\t*.sh)  echo \"[Entrypoint] running $f\"; . \"$f\"
+    ;;\n\t\t\t\t*.sql) echo \"[Entrypoint] running $f\"; /usr/bin/mysql -hlocalhost
+    -uroot -p$MYSQL_ROOT_PASSWORD < \"$f\" && echo ;;\n\t\t\t\t*)     echo \"[Entrypoint]
+    ignoring $f\" ;;\n\t\t\tesac\n\t\t\techo\n\t\tdone\n\n\t\t# When using a local
+    socket, mysqladmin shutdown will only complete when the server is actually down\n\t\tmysqladmin
+    --defaults-extra-file=\"$PASSFILE\" shutdown -uroot --socket=\"$SOCKET\"\n\t\trm
+    -f \"$PASSFILE\"\n\t\tunset PASSFILE\n\t\techo \"[Entrypoint] Server shut down\"\n\n\t\t#
+    This needs to be done outside the normal init, since mysqladmin shutdown will
+    not work after\n\t\tif [ ! -z \"$MYSQL_ONETIME_PASSWORD\" ]; then\n\t\t\tif [
+    -z \"yes\" ]; then\n\t\t\t\techo \"[Entrypoint] User expiration is only supported
+    in MySQL 5.6+\"\n\t\t\telse\n\t\t\t\techo \"[Entrypoint] Setting root user as
+    expired. Password will need to be changed before database can be used.\"\n\t\t\t\tSQL=$(mktemp
+    -u /var/lib/mysql-files/XXXXXXXXXX)\n\t\t\t\tinstall /dev/null -m0600 -omysql
+    -gmysql \"$SQL\"\n\t\t\t\tif [ ! -z \"$MYSQL_ROOT_HOST\" ]; then\n\t\t\t\t\tcat
+    << EOF > \"$SQL\"\nALTER USER 'root'@'${MYSQL_ROOT_HOST}' PASSWORD EXPIRE;\nALTER
+    USER 'root'@'localhost' PASSWORD EXPIRE;\nEOF\n\t\t\t\telse\n\t\t\t\t\tcat <<
+    EOF > \"$SQL\"\nALTER USER 'root'@'localhost' PASSWORD EXPIRE;\nEOF\n\t\t\t\tfi\n\t\t\t\tset
+    -- \"$@\" --init-file=\"$SQL\"\n\t\t\t\tunset SQL\n\t\t\tfi\n\t\tfi\n\n\t\techo\n\t\techo
+    '[Entrypoint] MySQL init process done. Ready for start up.'\n\t\techo\n\tfi\n\n\t#
+    Used by healthcheck to make sure it doesn't mistakenly report container\n\t# healthy
+    during startup\n\t# Put the password into the temporary config file\n\ttouch /var/tmp/healthcheck.cnf\n\tcat
+    >\"/var/tmp/healthcheck.cnf\" <<EOF\n[client]\nuser=healthchecker\nsocket=${SOCKET}\npassword=healthcheckpass\nEOF\n\ttouch
+    /var/tmp/mysql-init-complete\n\techo \"[Entrypoint] Starting MySQL $version\"\nfi\n\nif
+    [ \"$@\" == \"mysqld\" ]\nthen\n  echo \"[Entrypoint] MySQL  Docker Image $version
+    $PKGversion Starting in daemonize.\" \n  MYSQLD_PARENT_PID=$$\n  if [ -z \"$MYSQL_DEFAULTS\"
+    ]\n  then\n    $@ --daemonize -u $MYSQLUSER\n  elif [ -f $MYSQL_DEFAULTS ]\n  then\n
+    \   $@ --defaults-file=$MYSQL_DEFAULTS --daemonize -u mysql\n  else\n   $@ --daemonize
+    -u $MYSQLUSER\n  fi\nelse\n  echo \"[Entrypoint] MySQL  Docker Image $version
+    $PKGversion Starting.\" \n  env MYSQLD_PARENT_PID=$$ \"$@\" \nfi\n\nsleep 15\n\nwhile
+    true\ndo\n\tif [ -f /tmp/stop ]\n\tthen\n\t\techo \"[Entrypoint] Stoping MySQL
+    Docker Image $version $PKGversion\"\n\t\t/usr/bin/mysqladmin -uroot -p$MYSQL_ROOT_PASSWORD
+    shutdown\n\t\techo \"[Entrypoint] MySQL Docker Image $version $PKGversion Stopped\"\n\t\ttouch
+    /tmp/stopped\n\t\texit 0\n\tfi\n\n\tsleep 10\ndone\n"
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2024-06-02T23:23:59Z"
+  name: mysqld-sh
+  namespace: crypto-trader

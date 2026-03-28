@@ -1,0 +1,52 @@
+apiVersion: v1
+data:
+  backup-db.sh: |
+    #!/bin/bash
+
+    echo "[`date \"+%Y-%m-%d %H:%M:%S\"`] Start"
+    rootBackup="/var/backups/mysql"
+
+    if [ -f /.mysql.pw ]
+    then
+      MYSQL_ROOT_PASSWORD=`cat /.mysql.pw`
+    fi
+
+    if [ -z $GRACEDAYS ]
+    then
+      GRACEDAYS=7
+    fi
+
+    if [ -d $rootBackup ]
+    then
+      if [ -x /usr/bin/mysqldump ]
+      then
+        NOW=`date "+%Y%m%d_%H%M%S"`
+        for db in `echo "show schemas;" | /usr/bin/mysql 2>/dev/null`
+        do
+          if [ $db != "Database" -a $db != "information_schema" -a $db != "mysql" -a $db != "performance_schema" -a $db != "sys" ]
+          then
+            if [ ! -d $rootBackup/$db ]
+            then
+              echo "[`date \"+%Y-%m-%d %H:%M:%S\"`] Create directory $rootBackup/$db"
+              mkdir -p $rootBackup/$db
+            fi
+
+            echo "[`date \"+%Y-%m-%d %H:%M:%S\"`] backup $db started."
+            dumpFile=$rootBackup/$db/$db.${NOW}.dump
+            echo "SET SESSION SQL_LOG_BIN=0;" > $dumpFile
+            /usr/bin/mysqldump --set-gtid-purged=OFF --routines --triggers $db >> $dumpFile
+            /usr/bin/gzip $dumpFile
+            echo "[`date \"+%Y-%m-%d %H:%M:%S\"`] backup $db completed"
+            echo "[`date \"+%Y-%m-%d %H:%M:%S\"`] removed old backup"
+            find $rootBackup/$db/ -type f -name "*.dump*" -mtime +$GRACEDAYS -exec rm -vf {} \;
+          fi
+        done
+      fi
+    else
+      echo "[`date \"+%Y-%m-%d %H:%M:%S\"`] $rootBackup does no exists"
+    fi
+
+    echo "[`date \"+%Y-%m-%d %H:%M:%S\"`] end"
+kind: ConfigMap
+metadata:
+  name: backup-db-sh

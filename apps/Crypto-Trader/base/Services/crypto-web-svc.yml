@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: crypto-web-svc
+spec:
+  selector:
+    app: crypto-appl
+  ports:
+    - protocol: TCP
+      name: https
+      port: 443
+      targetPort: 8443
+    - protocol: TCP
+      name: http
+      port: 80
+      targetPort: 8052
+  type: ClusterIP
