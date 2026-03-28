@@ -3,4 +3,4 @@ kind: Kustomization
 
 resources:
   - gateway-api/GatewayClass.yaml
-  - gateway-api/Geteway.yaml
+  - gateway-api/Gateway.yaml
