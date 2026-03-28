@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: crypto-trader-dev
+  name: crypto-trader-prod
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: git@github.com:DanielBlanchet/scdb-cluster-gitops.git
     targetRevision: main
-    path: apps/Crypto-Trader/overlays/dev
+    path: apps/Crypto-Trader/overlays/prod
   destination:
     server: https://kubernetes.default.svc
     namespace: crypto-trader
