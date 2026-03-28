@@ -33,4 +33,4 @@ spec:
             name: test-web-prod-ssl
       allowedRoutes:
         namespaces:
-          from: All
+          from: test
