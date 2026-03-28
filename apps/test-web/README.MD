@@ -3,7 +3,7 @@
 env=prod
 env=dev
 
-site=test.${env}.home.dblanchet.net
+site=test-web.${env}.home.dblanchet.net
 name=test-web-${env}-ssl
 email='daniel@dblanchet.net'
 namespace=test

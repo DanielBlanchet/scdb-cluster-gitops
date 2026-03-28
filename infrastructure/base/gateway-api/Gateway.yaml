@@ -22,3 +22,15 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+    - name: https-test-web
+      protocol: HTTPS
+      port: 8443
+      hostname: test-web.prod.home.dblanchet.net
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: webts-web-dev-ssl
+      allowedRoutes:
+        namespaces:
+          from: All
