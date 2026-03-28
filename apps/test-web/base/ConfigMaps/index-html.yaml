@@ -30,4 +30,4 @@ data:
     </html>
 kind: ConfigMap
 metadata:
-  name: index.html
+  name: index-html
