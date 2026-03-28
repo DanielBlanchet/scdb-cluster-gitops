@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: test-web
+  name: infrastructure
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: git@github.com:DanielBlanchet/scdb-cluster-gitops.git
     targetRevision: main
-    path: apps/test-web/overlays/test
+    path: infrastructure/overlays/prod
   destination:
     server: https://kubernetes.default.svc
-    namespace: test
+    namespace: kube-system
   syncPolicy:
     automated:
       prune: true
