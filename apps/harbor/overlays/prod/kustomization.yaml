@@ -3,4 +3,4 @@ kind: Kustomization
 
 resources:
   - ReferenceGrants/allow-gateway-to-certs.yaml
-  - HTTPRoutes/harbor-prod.yaml
+  - HTTPRoutes/harbor-route.yaml
