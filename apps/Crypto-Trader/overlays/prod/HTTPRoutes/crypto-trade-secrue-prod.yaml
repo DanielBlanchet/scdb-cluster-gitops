@@ -17,4 +17,4 @@ spec:
             value: /
       backendRefs:
         - name: crypto-web-svc
-          port: 8052
+          port: 80
