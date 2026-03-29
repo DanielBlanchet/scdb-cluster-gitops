@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+#resources:
+#  - Namespaces/namespace.yaml
+#  - ConfigMaps/backup-db-sh.yml
+#  - ConfigMaps/my-cnf.yml
+#  - ConfigMaps/mysqld-sh.yml
+#  - Services/mysql-db-svc.yml
+#  - Services/crypto-web-svc.yml
+#  - PersistentVolumeClaim/db-backup.yml
+#  - PersistentVolumeClaim/logs.yml
+#  - Statefulset/mysql-db.yml
+#  - CronJobs/mysql-backup.yaml
+#  - Deployements/crypto-appl.yml
+#  - Deployements/crypto-operator.yml

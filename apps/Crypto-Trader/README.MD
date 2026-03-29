@@ -8,6 +8,9 @@ name=crypto-scdb-${env}-ssl
 email='daniel@dblanchet.net'
 namespace=crypto-trader
 
+cd ~/Projets/scdb-k3s/apps/harbor/ssl
+./build_crt.sh
+
 cd /tmp
 openssl req -newkey rsa:4096 -x509 -sha256 -days `expr 365 \* 5` -nodes -out $site.crt -keyout $site.key -subj "/C=CA/ST=Quebec/L=La Prairie/O=SCDB inc./OU=Technologie/CN=$site/emailAddress=$email"
 
