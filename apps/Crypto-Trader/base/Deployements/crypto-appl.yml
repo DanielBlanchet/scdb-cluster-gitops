@@ -48,9 +48,9 @@ spec:
             value: "America/Montreal"
           - name: BASELOGSDIR
             value: '/var/log/appls'
-      imagePullSecrets:
-      - name: docker-io-pull-secret
-      - name: harbor-pull-secret
+#      imagePullSecrets:
+#      - name: docker-io-pull-secret
+#      - name: harbor-pull-secret
       volumes:
       - name: logs-storage
         persistentVolumeClaim:
