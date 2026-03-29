@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - ../../base
   - ReferenceGrants/allow-gateway-to-certs.yaml
-#  - HTTPRoutes/webts-secure-route.yaml
+  - HTTPRoutes/webts-secure-route.yaml
 
 #patchesStrategicMerge:
 #  - Deployements/nginx-php-patch.yaml
