@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crypto-appl
+  labels:
+    app: crypto-appl
+spec:
+  revisionHistoryLimit: 1
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crypto-appl
+  template:
+    metadata:
+      labels:
+        app: crypto-appl
+    spec:
+      initContainers:
+        - name: check-db-ready
+          imagePullPolicy: IfNotPresent
+          image: busybox
+          command: ['sh', '-c', "until nc -zv mysql-db-svc 3306; do echo waiting; sleep 5; done ; sleep 5"]
+      containers:
+      - name: crypto-appl
+        image: harbor.home.dblanchet.net/crypto/crypto-appl:v2.0.8
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8052
+          protocol: TCP
+        - containerPort: 8443
+          protocol: TCP
+        volumeMounts:
+          - name: logs-storage
+            mountPath: /var/log/appls
+#          - name: crypto-appl-ssl
+#            mountPath: /var/lib/appl/ssl
+#            readOnly: true
+          - mountPath: /var/lib/appl/config.cfg
+            name: web-config-cfg
+            readOnly: true
+            subPath: config.cfg
+          - mountPath: /var/lib/appl/mysql-db.json
+            name: mysql-db-connect
+            readOnly: true
+            subPath: mysql-db.json
+        env:
+          - name: TZ
+            value: "America/Montreal"
+          - name: BASELOGSDIR
+            value: '/var/log/appls'
+      imagePullSecrets:
+      - name: docker-io-pull-secret
+      - name: harbor-pull-secret
+      volumes:
+      - name: logs-storage
+        persistentVolumeClaim:
+          claimName: logs-storage
+#      - name: crypto-appl-ssl
+#        secret:
+#          defaultMode: 420
+#          secretName: crypto-appl-ssl
+      - name: web-config-cfg
+        secret:
+          defaultMode: 420
+          secretName: web-config-cfg
+      - name: mysql-db-connect
+        secret:
+          defaultMode: 420
+          secretName: mysql-db-connect

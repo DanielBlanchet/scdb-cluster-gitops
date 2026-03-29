@@ -1,0 +1,93 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: crypto-operator
+  labels:
+    app: crypto-operator
+    crypto: operator
+spec:
+  revisionHistoryLimit: 1
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: crypto-operator
+  template:
+    metadata:
+      labels:
+        app: crypto-operator
+        crypto: operator
+    spec:
+      initContainers:
+        - name: check-db-ready
+          imagePullPolicy: IfNotPresent
+          image: busybox
+          command: ['sh', '-c', "until nc -zv mysql-db-svc 3306; do echo waiting; sleep 5; done ; sleep 5"]
+      containers:
+      - name: crypto-operator
+        image: harbor.home.dblanchet.net/crypto/traders:v2.1.24
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+          - name: logs-storage
+            mountPath: /var/log/appls
+          - name: kube-config
+            mountPath: /home/crypto/.kube/config
+            subPath: .kube/config
+          - mountPath: /var/lib/appl/mysql-db.json
+            name: mysql-db-connect
+            readOnly: true
+            subPath: mysql-db.json
+        env:
+          - name: PYTHONPATH
+            value: "/usr/local/bin:/home/crypto/.local/bin"
+          - name: TZ
+            value: "America/Montreal"
+          - name: MYSQL_JSON_FILE
+            value: "/var/lib/appl/mysql-db.json"
+          - name: START_CMD
+            value: "/usr/local/bin/crypto_operator.py"
+          - name: INTERVAL
+            value: "5"
+          - name: QUOTE_CCY
+            value: 'USD'
+          - name: BASELOGSDIR
+            value: '/var/log/appls'
+          - name: NAMESPACE
+            value: 'crypto-trader'
+          - name: IMAGEUPDATE
+            value: "True"
+          - name: USERID
+            value: 'None'
+          - name: CANDLESTICK
+            value: "None"
+          - name: CANDLESTICKCOUNT
+            value: "None"
+          - name: EXCHANGE
+            value: "None"
+          - name: STRATEGY
+            value: "None"
+          - name: STRATEGIES
+            value: "macd,macd2,macd3,drop,drop2,dan1,dan2,dan3,rsi,wr"
+      imagePullSecrets:
+      - name: docker-io-pull-secret
+      - name: harbor-pull-secret
+      terminationGracePeriodSeconds: 60
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+        runAsGroup: 1000
+      volumes:
+      - name: logs-storage
+        persistentVolumeClaim:
+          claimName: logs-storage
+      - name: kube-config
+        secret:
+          secretName: kube-config
+          items:
+            - key: config
+              path: .kube/config
+      - name: mysql-db-connect
+        secret:
+          defaultMode: 420
+          secretName: mysql-db-connect

@@ -12,4 +12,4 @@ resources:
   - PersistentVolumeClaim/logs.yml
   - Statefulset/mysql-db.yml
   - CronJobs/mysql-backup.yaml
-#  - Deployements/nginx-php.yml
+  - Deployements/crypto-appl.yml
