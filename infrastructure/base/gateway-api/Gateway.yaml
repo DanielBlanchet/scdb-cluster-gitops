@@ -85,4 +85,4 @@ spec:
           from: Selector
           selector:
             matchLabels:
-              kubernetes.io/metadata.name: crypto-trader
+              kubernetes.io/metadata.name: harbor
