@@ -32,9 +32,6 @@ spec:
         volumeMounts:
           - name: logs-storage
             mountPath: /var/log/appls
-#          - name: crypto-appl-ssl
-#            mountPath: /var/lib/appl/ssl
-#            readOnly: true
           - mountPath: /var/lib/appl/config.cfg
             name: web-config-cfg
             readOnly: true
@@ -48,9 +45,6 @@ spec:
             value: "America/Montreal"
           - name: BASELOGSDIR
             value: '/var/log/appls'
-#      imagePullSecrets:
-#      - name: docker-io-pull-secret
-#      - name: harbor-pull-secret
       volumes:
       - name: logs-storage
         persistentVolumeClaim:

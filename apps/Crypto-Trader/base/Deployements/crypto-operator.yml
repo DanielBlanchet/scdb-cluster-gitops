@@ -69,9 +69,6 @@ spec:
             value: "None"
           - name: STRATEGIES
             value: "macd,macd2,macd3,drop,drop2,dan1,dan2,dan3,rsi,wr"
-      imagePullSecrets:
-      - name: docker-io-pull-secret
-      - name: harbor-pull-secret
       terminationGracePeriodSeconds: 60
       securityContext:
         fsGroup: 1000
