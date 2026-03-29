@@ -78,7 +78,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: harbor-core
+            name: harbor-ingress
             namespace: harbor
       allowedRoutes:
         namespaces:

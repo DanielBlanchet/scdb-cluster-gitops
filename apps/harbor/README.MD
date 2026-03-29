@@ -12,7 +12,7 @@ name=crypto-scdb-${env}-ssl
 email='daniel@dblanchet.net'
 namespace=harbor
 
-export HARBOR_HOSTNAME="harbor.prod.home.dblanchet.net"
+export HARBOR_HOSTNAME=${site}
 cd ~/Projets/SCDB/scdb-k3s/
 ./apps/harbor/ssl/build_crt.sh
 
@@ -24,3 +24,12 @@ kubectl create secret generic harbor-ingress \
 --from-file=tls.crt=/tmp/${HARBOR_HOSTNAME}.crt \
 --from-file=tls.key=/tmp/${HARBOR_HOSTNAME}.key -o yaml | \
 kubectl apply -f -
+
+# Add ca to docker build
+
+cd ~/.docker/cert.d
+mkdir ${site}:443
+cd ${site}:443
+kubectl get secrets harbor-ingress -o json | jq -r '.data["tls.crt"]' | base64 -d > ${site}.crt
+kubectl get secrets harbor-ingress -o json | jq -r '.data["ca.crt"]' | base64 -d > harbor_ca.crt
+
