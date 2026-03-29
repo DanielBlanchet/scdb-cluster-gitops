@@ -1,7 +1,19 @@
-#
-//  webts-route.yaml
-//  scdb-k3s
-//
-//  Created by Daniel Blanchet on 2026-03-28.
-//
-
+kind: HTTPRoute
+metadata:
+  name: webts-secure-route
+  namespace: webts
+spec:
+  parentRefs:
+    - name: scdb-gateway
+      namespace: default
+      sectionName: https-prod-webts
+  hostnames:
+    - webts.prod.home.dblanchet.net
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: webts-web-svc
+          port: 8080

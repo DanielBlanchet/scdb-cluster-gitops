@@ -13,15 +13,15 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    - name: tls
-      protocol: TLS
-      port: 8443
-      hostname: "*.home.dblanchet.net"
-      tls:
-        mode: Passthrough
-      allowedRoutes:
-        namespaces:
-          from: All
+#    - name: tls
+#      protocol: TLS
+#      port: 8443
+#      hostname: "*.home.dblanchet.net"
+#      tls:
+#        mode: Passthrough
+#      allowedRoutes:
+#        namespaces:
+#          from: All
     - name: https-test-web
       protocol: HTTPS
       port: 8443
@@ -38,3 +38,19 @@ spec:
           selector:
             matchLabels:
               kubernetes.io/metadata.name: test
+    - name: https-prod-webts
+      protocol: HTTPS
+      port: 8443
+      hostname: webts.prod.home.dblanchet.net
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: webts-web-prod-ssl
+            namespace: webts
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              kubernetes.io/metadata.name: webts
