@@ -54,3 +54,19 @@ spec:
           selector:
             matchLabels:
               kubernetes.io/metadata.name: webts
+    - name: https-prod-crypto-scdb
+      protocol: HTTPS
+      port: 8443
+      hostname: crypto-scdb.prod.home.dblanchet.net
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: crypto-scdb-prod-ssl
+            namespace: crypto-trader
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              kubernetes.io/metadata.name: crypto-trader
