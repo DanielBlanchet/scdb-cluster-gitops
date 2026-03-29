@@ -4,7 +4,7 @@ metadata:
   name: harbor-prod
   namespace: argocd
 spec:
-  project: harbor
+  project: default
   source:
     repoURL: git@github.com:DanielBlanchet/scdb-cluster-gitops.git
     targetRevision: main
