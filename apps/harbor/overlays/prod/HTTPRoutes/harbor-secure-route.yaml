@@ -7,7 +7,7 @@ spec:
   parentRefs:
     - name: scdb-gateway
       namespace: default
-      sectionName: https-harbor-web
+      sectionName: https-prod-harbor
   hostnames:
     - harbor.prod.home.dblanchet.net
   rules:
