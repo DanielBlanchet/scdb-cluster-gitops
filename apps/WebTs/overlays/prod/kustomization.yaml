@@ -6,5 +6,5 @@ resources:
   - ReferenceGrants/allow-gateway-to-certs.yaml
 #  - HTTPRoutes/webts-secure-route.yaml
 
-patchesStrategicMerge:
-  - Deployements/nginx-php-patch.yaml
+#patchesStrategicMerge:
+#  - Deployements/nginx-php-patch.yaml
