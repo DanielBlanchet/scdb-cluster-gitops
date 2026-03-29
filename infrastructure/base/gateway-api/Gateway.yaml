@@ -70,3 +70,19 @@ spec:
           selector:
             matchLabels:
               kubernetes.io/metadata.name: crypto-trader
+    - name: https-prod-harbor
+      protocol: HTTPS
+      port: 8443
+      hostname: harbor.prod.home.dblanchet.net
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: harbor-core
+            namespace: harbor
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              kubernetes.io/metadata.name: crypto-trader
