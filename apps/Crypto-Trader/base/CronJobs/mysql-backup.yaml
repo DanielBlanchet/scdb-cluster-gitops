@@ -60,4 +60,4 @@ spec:
             name: backup-db-sh
   schedule: 0 0/8 * * *
   successfulJobsHistoryLimit: 1
-  suspend: true
+  suspend: false
