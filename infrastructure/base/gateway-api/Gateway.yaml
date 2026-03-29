@@ -22,18 +22,18 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-#    - name: https-test-web
-#      protocol: HTTPS
-#      port: 8443
-#      hostname: test-web.prod.home.dblanchet.net
-#      tls:
-#        mode: Terminate
-#        certificateRefs:
-#          - kind: Secret
-#            name: test-web-prod-ssl
-#      allowedRoutes:
-#        namespaces:
-#          from: Selector
-#          selector:
-#            matchLabels:
-#              gateway-access: test
+    - name: https-test-web
+      protocol: HTTPS
+      port: 8443
+      hostname: test-web.prod.home.dblanchet.net
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: test-web-prod-ssl
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              kubernetes.io/metadata.name: test
