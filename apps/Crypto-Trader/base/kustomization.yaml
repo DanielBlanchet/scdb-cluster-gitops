@@ -13,3 +13,4 @@ resources:
   - Statefulset/mysql-db.yml
   - CronJobs/mysql-backup.yaml
   - Deployements/crypto-appl.yml
+  - Deployements/crypto-operator.yml
