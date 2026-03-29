@@ -15,8 +15,11 @@ kubectl create secret tls ${name} \
   --cert=./${site}.crt \
   --key=./${site}.key \
   -n $namespace
+cd -
 
 # Create secret
 
 kubectl create -f apps/Crypto-Trader/base/Secrets/my-cnf-backup.yaml
 kubectl create -f apps/Crypto-Trader/base/Secrets/mysql-db-connect.yml
+kubectl create -f apps/Crypto-Trader/base/Secrets/web-config-cfg.yml
+kubectl create secret generic kube-config --from-file=config=${HOME}/.kube/config.d/scdb-k3s.conf
