@@ -13,15 +13,15 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-#    - name: tls
-#      protocol: TLS
-#      port: 8443
-#      hostname: "*.home.dblanchet.net"
-#      tls:
-#        mode: Passthrough
-#      allowedRoutes:
-#        namespaces:
-#          from: All
+    - name: tls
+      protocol: TLS
+      port: 8443
+      hostname: "*.home.dblanchet.net"
+      tls:
+        mode: Passthrough
+      allowedRoutes:
+        namespaces:
+          from: All
     - name: https-test-web
       protocol: HTTPS
       port: 8443
