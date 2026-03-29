@@ -3,7 +3,8 @@ kind: Kustomization
 
 resources:
   - ../../base
-#  - TLSroutes/webts-prod.yml
+  - ReferenceGrants/allow-gateway-to-certs.yaml
+  - HTTPRoutes/crypto-trade-secrue-prod.yaml
 
 #patchesStrategicMerge:
 #  - Deployements/nginx-php-patch.yaml
