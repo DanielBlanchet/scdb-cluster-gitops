@@ -31,8 +31,7 @@ spec:
         certificateRefs:
           - kind: Secret
             name: test-web-prod-ssl
-            ReferenceGrant:
-              namespace: test
+            namespace: test
       allowedRoutes:
         namespaces:
           from: Selector
