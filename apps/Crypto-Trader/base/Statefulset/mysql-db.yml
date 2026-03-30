@@ -35,7 +35,7 @@ spec:
           value: /opt/mysql/mysqld.sh mysqld
         - name: TZ
           value: America/Montreal
-        image: harbor.home.dblanchet.net/scdb/mysql-cluster:v3.5.1
+        image: harbor.prod.home.dblanchet.net/scdb/mysql-cluster:v3.5.1
         imagePullPolicy: IfNotPresent
         name: mysql-db
         ports:
