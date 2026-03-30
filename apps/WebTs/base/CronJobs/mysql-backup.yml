@@ -23,7 +23,7 @@ items:
               env:
               - name: GRACEDAYS
                 value: "5"
-              image: harbor.home.dblanchet.net/scdb/mysql-cluster:v3.5.1
+              image: harbor.prod.home.dblanchet.net/scdb/mysql-cluster:v3.5.1
               imagePullPolicy: IfNotPresent
               name: mysql-backup
               resources: {}
