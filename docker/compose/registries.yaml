@@ -1,5 +1,14 @@
-wconfigs:
+mirrors:
+  "harbor.home.dblanchet.net":
+    endpoint:
+      - "https://harbor.home.dblanchet.net"
+  "harbor.prod.home.dblanchet.net":
+    endpoint:
+      - "https://harbor.prod.home.dblanchet.net"
+configs:
   "harbor.home.dblanchet.net":
     tls:
       insecure_skip_verify: true
-
+  "harbor.prod.home.dblanchet.net":
+    tls:
+      insecure_skip_verify: true

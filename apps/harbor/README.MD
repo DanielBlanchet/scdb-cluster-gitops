@@ -12,12 +12,13 @@ name=crypto-scdb-${env}-ssl
 email='daniel@dblanchet.net'
 namespace=harbor
 
-export HARBOR_HOSTNAME=${site}
+export e=${site}
 cd ~/Projets/SCDB/scdb-k3s/
 ./apps/harbor/ssl/build_crt.sh
 
 # Create secret
 
+kubectl delete secret harbor-ingress
 kubectl create secret generic harbor-ingress \
 --dry-run=client \
 --from-file=ca.crt=/tmp/harbor_ca.crt \
