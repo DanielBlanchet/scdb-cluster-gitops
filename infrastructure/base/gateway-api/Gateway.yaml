@@ -86,3 +86,19 @@ spec:
           selector:
             matchLabels:
               kubernetes.io/metadata.name: harbor
+    - name: https-prod-argocd
+      protocol: HTTPS
+      port: 8443
+      hostname: argocd.prod.home.dblanchet.net
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: argocd-prod-ssl
+            namespace: argocd
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              kubernetes.io/metadata.name: argocd
