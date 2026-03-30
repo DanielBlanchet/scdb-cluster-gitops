@@ -23,7 +23,7 @@ spec:
               value: test
             - name: GRACEDAYS
               value: "5"
-            image: harbor.home.dblanchet.net/scdb/mysql-cluster:v3.5.1
+            image: harbor.prod.home.dblanchet.net/scdb/mysql-cluster:v3.5.1
             name: mysql-backup
             resources: {}
             terminationMessagePath: /dev/termination-log
