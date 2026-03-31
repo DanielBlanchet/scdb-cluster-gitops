@@ -11,4 +11,4 @@ spec:
   to:
     - group: ""
       kind: Secret
-      name: argocd-prod-ssl
+      name: argocd-prod-tls

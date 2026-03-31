@@ -1,10 +1,16 @@
 # Install argocd
+cd ~/Projets/SCDB/scdb-k3s
 helm repo add argo https://argoproj.github.io/argo-helm
 helm repo update
 
 helm install argocd argo/argo-cd \
   -n argocd \
-  --create-namespace
+  --create-namespace \
+  --values apps/argocd/base/helm/values.yaml
+
+# Mot de passe original
+
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
   
 # Create webts ssl certificate / secret
 
@@ -15,9 +21,16 @@ email='daniel@dblanchet.net'
 namespace=argocd
 
 cd /tmp
-openssl req -newkey rsa:4096 -x509 -sha256 -days `expr 365 \* 5` -nodes -out $site.crt -keyout $site.key -subj "/C=CA/ST=Quebec/L=La Prairie/O=SCDB inc./OU=Technologie/CN=$site/emailAddress=$email"
+site=argocd.prod.home.dblanchet.net
+email='daniel@dblanchet.net'
+~/Projets/scripts/build_ssl.py -d $site --country CA --state Quebec --city "La Prairie" --organization "SCDB inc." --ou Infra --email $email
 
-kubectl create secret tls ${name} \
-  --cert=./${site}.crt \
-  --key=./${site}.key \
-  -n $namespace
+# Create secret:
+
+kubectl create secret tls argocd-prod-tls --cert=ssl/$site.cert.pem --key=ssl/$site.key.pem -n argocd
+
+# install route
+
+cd ~/Projets/SCDB/scdb-k3s
+kubectl create -f apps/argocd/base/ReferenceGrants/allow-gateway-to-certs.yaml
+kubectl create -f apps/argocd/base/HTTPRoutes/argocd-secure-prod.yaml

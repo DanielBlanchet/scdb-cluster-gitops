@@ -1,7 +1,7 @@
 # Installation de harbor.
 
 helm repo update
-helm install harbor harbor/harbor -n harbor --create-namespace -f apps/harbor/conf/values.yaml
+helm install harbor harbor/harbor -n harbor --create-namespace -f apps/harbor/helm/values.yaml
 
 # Create webts ssl certificate / secret
 

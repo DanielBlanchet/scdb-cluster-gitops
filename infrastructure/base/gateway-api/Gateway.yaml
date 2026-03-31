@@ -9,14 +9,14 @@ spec:
     - name: http
       protocol: HTTP
       port: 8000
-      hostname: "*.home.dblanchet.net"
+      hostname: "*.prod.home.dblanchet.net"
       allowedRoutes:
         namespaces:
           from: All
-    - name: tls
+    - name: tls-prod-argocd
       protocol: TLS
       port: 8443
-      hostname: "*.home.dblanchet.net"
+      hostname: "*.prod.home.dblanchet.net"
       tls:
         mode: Passthrough
       allowedRoutes:
@@ -94,7 +94,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: argocd-prod-ssl
+            name: argocd-prod-tls
             namespace: argocd
       allowedRoutes:
         namespaces:
