@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - gateway-api/GatewayClass.yaml
   - gateway-api/Gateway.yaml
+  - traefik/traefik-config.yaml
