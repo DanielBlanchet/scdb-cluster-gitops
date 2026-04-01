@@ -25,9 +25,9 @@ spec:
             - containerPort: 8581
               name: http
               protocol: TCP
-            - containerPort: 62300
-              name: hk-62300
-              protocol: TCP
+#            - containerPort: 62300
+#              name: hk-62300
+#              protocol: TCP
             - containerPort: 5353
               name: mdns
               protocol: UDP
