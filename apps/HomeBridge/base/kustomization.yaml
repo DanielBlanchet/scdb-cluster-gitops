@@ -5,3 +5,4 @@ resources:
   - Namespaces/namespace.yaml
   - PersistentVolumeClaim/homebridge-backups-pvc.yaml
   - PersistentVolumeClaim/homebridge-config-pvc.yaml
+  - ConfigMaps/homebridge-env.yml
