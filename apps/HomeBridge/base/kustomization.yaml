@@ -8,3 +8,4 @@ resources:
   - ConfigMaps/homebridge-env.yml
   - Services/homebridge-svc.yml
   - Services/homekit-svc.yaml
+  - Deployements/homebridge.yaml
