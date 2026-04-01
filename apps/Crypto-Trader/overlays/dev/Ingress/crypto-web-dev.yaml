@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: HTTP
+    nginx.ingress.kubernetes.io/ssl-passthrough: "false"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+  name: crypto-web-dev
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: crypto-scdb.dev.home.dblanchet.net
+    http:
+      paths:
+      - backend:
+          service:
+            name: crypto-web-svc
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - crypto-scdb.dev.home.dblanchet.net
+    secretName: crypto-trader-dev-tls

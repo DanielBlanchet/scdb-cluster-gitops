@@ -1,8 +1,10 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: html
+  name: html-nfs
+  namespace: test
 spec:
+  storageClassName: nfs-storage
   accessModes:
     - ReadWriteOnce
   resources:
