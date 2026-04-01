@@ -6,3 +6,5 @@ resources:
   - PersistentVolumeClaim/homebridge-backups-pvc.yaml
   - PersistentVolumeClaim/homebridge-config-pvc.yaml
   - ConfigMaps/homebridge-env.yml
+  - Services/homebridge-svc.yml
+  - Services/homekit-svc.yaml

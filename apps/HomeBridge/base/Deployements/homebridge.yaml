@@ -1,0 +1,360 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homebridge
+  namespace: homebridge
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: homebridge
+  template:
+    metadata:
+      labels:
+        app: homebridge
+    spec:
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      containers:
+        - name: homebridge
+          image: harbor.prod.home.dblanchet.net/scdb/homebridge:node24.13.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8581
+              name: http
+              protocol: TCP
+            - containerPort: 63300
+              name: hk-63300
+              protocol: TCP
+            - containerPort: 63301
+              name: hk-63301
+              protocol: TCP
+            - containerPort: 63302
+              name: hk-63302
+              protocol: TCP
+            - containerPort: 63303
+              name: hk-63303
+              protocol: TCP
+            - containerPort: 63304
+              name: hk-63304
+              protocol: TCP
+            - containerPort: 63305
+              name: hk-63305
+              protocol: TCP
+            - containerPort: 63306
+              name: hk-63306
+              protocol: TCP
+            - containerPort: 63307
+              name: hk-63307
+              protocol: TCP
+            - containerPort: 63308
+              name: hk-63308
+              protocol: TCP
+            - containerPort: 63309
+              name: hk-63309
+              protocol: TCP
+            - containerPort: 63310
+              name: hk-63310
+              protocol: TCP
+            - containerPort: 63311
+              name: hk-63311
+              protocol: TCP
+            - containerPort: 63312
+              name: hk-63312
+              protocol: TCP
+            - containerPort: 63313
+              name: hk-63313
+              protocol: TCP
+            - containerPort: 63314
+              name: hk-63314
+              protocol: TCP
+            - containerPort: 63315
+              name: hk-63315
+              protocol: TCP
+            - containerPort: 63316
+              name: hk-63316
+              protocol: TCP
+            - containerPort: 63317
+              name: hk-63317
+              protocol: TCP
+            - containerPort: 63318
+              name: hk-63318
+              protocol: TCP
+            - containerPort: 63319
+              name: hk-63319
+              protocol: TCP
+            - containerPort: 63320
+              name: hk-63320
+              protocol: TCP
+            - containerPort: 63321
+              name: hk-63321
+              protocol: TCP
+            - containerPort: 63322
+              name: hk-63322
+              protocol: TCP
+            - containerPort: 63323
+              name: hk-63323
+              protocol: TCP
+            - containerPort: 63324
+              name: hk-63324
+              protocol: TCP
+            - containerPort: 63325
+              name: hk-63325
+              protocol: TCP
+            - containerPort: 63326
+              name: hk-63326
+              protocol: TCP
+            - containerPort: 63327
+              name: hk-63327
+              protocol: TCP
+            - containerPort: 63328
+              name: hk-63328
+              protocol: TCP
+            - containerPort: 63329
+              name: hk-63329
+              protocol: TCP
+            - containerPort: 63330
+              name: hk-63330
+              protocol: TCP
+            - containerPort: 63331
+              name: hk-63331
+              protocol: TCP
+            - containerPort: 63332
+              name: hk-63332
+              protocol: TCP
+            - containerPort: 63333
+              name: hk-63333
+              protocol: TCP
+            - containerPort: 63334
+              name: hk-63334
+              protocol: TCP
+            - containerPort: 63335
+              name: hk-63335
+              protocol: TCP
+            - containerPort: 63336
+              name: hk-63336
+              protocol: TCP
+            - containerPort: 63337
+              name: hk-63337
+              protocol: TCP
+            - containerPort: 63338
+              name: hk-63338
+              protocol: TCP
+            - containerPort: 63339
+              name: hk-63339
+              protocol: TCP
+            - containerPort: 63340
+              name: hk-63340
+              protocol: TCP
+            - containerPort: 63341
+              name: hk-63341
+              protocol: TCP
+            - containerPort: 63342
+              name: hk-63342
+              protocol: TCP
+            - containerPort: 63343
+              name: hk-63343
+              protocol: TCP
+            - containerPort: 63344
+              name: hk-63344
+              protocol: TCP
+            - containerPort: 63345
+              name: hk-63345
+              protocol: TCP
+            - containerPort: 63346
+              name: hk-63346
+              protocol: TCP
+            - containerPort: 63347
+              name: hk-63347
+              protocol: TCP
+            - containerPort: 63348
+              name: hk-63348
+              protocol: TCP
+            - containerPort: 63349
+              name: hk-63349
+              protocol: TCP
+            - containerPort: 63350
+              name: hk-63350
+              protocol: TCP
+            - containerPort: 63351
+              name: hk-63351
+              protocol: TCP
+            - containerPort: 63352
+              name: hk-63352
+              protocol: TCP
+            - containerPort: 63353
+              name: hk-63353
+              protocol: TCP
+            - containerPort: 63354
+              name: hk-63354
+              protocol: TCP
+            - containerPort: 63355
+              name: hk-63355
+              protocol: TCP
+            - containerPort: 63356
+              name: hk-63356
+              protocol: TCP
+            - containerPort: 63357
+              name: hk-63357
+              protocol: TCP
+            - containerPort: 63358
+              name: hk-63358
+              protocol: TCP
+            - containerPort: 63359
+              name: hk-63359
+              protocol: TCP
+            - containerPort: 63360
+              name: hk-63360
+              protocol: TCP
+            - containerPort: 63361
+              name: hk-63361
+              protocol: TCP
+            - containerPort: 63362
+              name: hk-63362
+              protocol: TCP
+            - containerPort: 63363
+              name: hk-63363
+              protocol: TCP
+            - containerPort: 63364
+              name: hk-63364
+              protocol: TCP
+            - containerPort: 63365
+              name: hk-63365
+              protocol: TCP
+            - containerPort: 63366
+              name: hk-63366
+              protocol: TCP
+            - containerPort: 63367
+              name: hk-63367
+              protocol: TCP
+            - containerPort: 63368
+              name: hk-63368
+              protocol: TCP
+            - containerPort: 63369
+              name: hk-63369
+              protocol: TCP
+            - containerPort: 63370
+              name: hk-63370
+              protocol: TCP
+            - containerPort: 63371
+              name: hk-63371
+              protocol: TCP
+            - containerPort: 63372
+              name: hk-63372
+              protocol: TCP
+            - containerPort: 63373
+              name: hk-63373
+              protocol: TCP
+            - containerPort: 63374
+              name: hk-63374
+              protocol: TCP
+            - containerPort: 63375
+              name: hk-63375
+              protocol: TCP
+            - containerPort: 63376
+              name: hk-63376
+              protocol: TCP
+            - containerPort: 63377
+              name: hk-63377
+              protocol: TCP
+            - containerPort: 63378
+              name: hk-63378
+              protocol: TCP
+            - containerPort: 63379
+              name: hk-63379
+              protocol: TCP
+            - containerPort: 63380
+              name: hk-63380
+              protocol: TCP
+            - containerPort: 63381
+              name: hk-63381
+              protocol: TCP
+            - containerPort: 63382
+              name: hk-63382
+              protocol: TCP
+            - containerPort: 63383
+              name: hk-63383
+              protocol: TCP
+            - containerPort: 63384
+              name: hk-63384
+              protocol: TCP
+            - containerPort: 63385
+              name: hk-63385
+              protocol: TCP
+            - containerPort: 63386
+              name: hk-63386
+              protocol: TCP
+            - containerPort: 63387
+              name: hk-63387
+              protocol: TCP
+            - containerPort: 63388
+              name: hk-63388
+              protocol: TCP
+            - containerPort: 63389
+              name: hk-63389
+              protocol: TCP
+            - containerPort: 63390
+              name: hk-63390
+              protocol: TCP
+            - containerPort: 63391
+              name: hk-63391
+              protocol: TCP
+            - containerPort: 63392
+              name: hk-63392
+              protocol: TCP
+            - containerPort: 63393
+              name: hk-63393
+              protocol: TCP
+            - containerPort: 63394
+              name: hk-63394
+              protocol: TCP
+            - containerPort: 63395
+              name: hk-63395
+              protocol: TCP
+            - containerPort: 63396
+              name: hk-63396
+              protocol: TCP
+            - containerPort: 63397
+              name: hk-63397
+              protocol: TCP
+            - containerPort: 63398
+              name: hk-63398
+              protocol: TCP
+            - containerPort: 63399
+              name: hk-63399
+              protocol: TCP
+            - containerPort: 5353
+              name: mdns
+              protocol: UDP
+          env:
+            # tu peux en ajouter selon ta config actuelle du conteneur
+            - name: PGID
+              value: "1000"
+            - name: PUID
+              value: "1000"
+            - name: TZ
+              value: "America/Montreal"
+            - name: HOMEBRIDGE_CONFIG_UI_PORT
+              value: "8581"
+          volumeMounts:
+            - name: config
+              mountPath: /homebridge
+            - name: homebridge-env
+              mountPath: /usr/local/bin/homebridge.env
+              subPath: homebridge.env
+            - name: backups
+              mountPath: /homebridge/backups/instance-backups
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: homebridge-config
+        - name: homebridge-env
+          configMap:
+            name: homebridge-env
+            defaultMode: 0644
+        - name: backups
+          persistentVolumeClaim:
+            claimName: homebridge-backups
+      terminationGracePeriodSeconds: 30
