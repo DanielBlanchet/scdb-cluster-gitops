@@ -8,7 +8,7 @@ spec:
     app: homebridge
   ports:
     - name: homekit
-      port: 63300
-      targetPort: 63300
+      port: 62300
+      targetPort: 62300
       protocol: TCP
   type: LoadBalancer
