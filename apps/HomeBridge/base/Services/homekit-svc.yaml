@@ -11,4 +11,4 @@ spec:
       port: 62300
       targetPort: 62300
       protocol: TCP
-  type: LoadBalancer
+  type: ClusterIP
