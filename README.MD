@@ -53,3 +53,10 @@ helm install argocd argo/argo-cd \
 # Add TLS CDR
 kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.1.0/experimental-install.yaml
 kubectl get crd | grep tlsroute
+
+# Install MetalLB
+
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
+
+kubectl apply -f infrastructure/base/MetalLB/metallb-ipaddresspool.yaml
+kubectl apply -f infrastructure/base/MetalLB/metallb-l2advertisement.yaml
