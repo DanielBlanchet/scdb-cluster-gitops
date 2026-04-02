@@ -22,7 +22,7 @@ spec:
           image: harbor.prod.home.dblanchet.net/scdb/homebridge:node24.13.0
           imagePullPolicy: Always
           ports:
-            - containerPort: 8582
+            - containerPort: 8581
               name: http
               protocol: TCP
             - containerPort: 62300
