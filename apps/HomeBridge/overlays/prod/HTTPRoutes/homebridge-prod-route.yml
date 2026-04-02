@@ -17,4 +17,4 @@ spec:
             value: /
       backendRefs:
         - name: homebridge
-          port: 8581
+          port: 8582
