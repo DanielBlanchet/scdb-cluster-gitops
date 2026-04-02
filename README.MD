@@ -1,3 +1,9 @@
+# Recreer le container k3s.
+
+cd ~/Projets/SCDB/scdb-k3s/docker/compose
+docker-compose down
+docker-compose up -d
+
 # Setup de node worker 
 kubectl label node scdb-k3s node-role.kubernetes.io/worker=worker
 

@@ -7,5 +7,5 @@ resources:
   - PersistentVolumeClaim/homebridge-config-pvc.yaml
   - ConfigMaps/homebridge-env.yml
   - Services/homebridge-svc.yml
-  - Services/homekit-svc.yaml
+#  - Services/homekit-svc.yaml
   - Deployements/homebridge.yaml
