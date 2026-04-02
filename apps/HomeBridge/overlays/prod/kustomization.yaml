@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ../../base
   - HTTPRoutes/homebridge-prod-route.yml
+  - ReferenceGrants/allow-gateway-to-certs.yaml

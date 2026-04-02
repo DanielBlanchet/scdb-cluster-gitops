@@ -102,3 +102,19 @@ spec:
           selector:
             matchLabels:
               kubernetes.io/metadata.name: argocd
+    - name: https-prod-homebridge
+      protocol: HTTPS
+      port: 8443
+      hostname: homebridge.prod.home.dblanchet.net
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: homebridge-prod-tls
+            namespace: homebridge
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              kubernetes.io/metadata.name: homebridge
