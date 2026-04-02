@@ -8,7 +8,7 @@ spec:
     app: homebridge
   ports:
     - name: http
-      port: 8581
-      targetPort: 8581
+      port: 8582
+      targetPort: 8582
       protocol: TCP
   type: ClusterIP
