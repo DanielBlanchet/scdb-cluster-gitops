@@ -110,7 +110,7 @@ spec:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: homebridge-prod-tls
+            name: homebridge-prod-ssl
             namespace: homebridge
       allowedRoutes:
         namespaces:
