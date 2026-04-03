@@ -12,7 +12,6 @@ services:
       - --node-name=scdb-k3s
       - --kube-apiserver-arg=service-node-port-range=62001-63000
       - --snapshotter=overlayfs
-      - --disable=servicelb
     environment:
       - TZ=America/Montreal
     ports:

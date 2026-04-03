@@ -4,6 +4,11 @@ cd ~/Projets/SCDB/scdb-k3s/docker/compose
 docker-compose down
 docker-compose up -d
 
+# Download kubeconfig.yaml
+
+docker cp scdb-k3s-test:/output/kubeconfig.yaml scdb-k3s.conf
+docker cp scdb-k3s-test:/output/kubeconfig.yaml scdb-k3s-test.conf
+
 # Setup de node worker 
 kubectl label node scdb-k3s node-role.kubernetes.io/worker=worker
 

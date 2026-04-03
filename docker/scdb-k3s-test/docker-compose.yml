@@ -1,0 +1,30 @@
+services:
+  k3s:
+    container_name: scdb-k3s-test
+    image: rancher/k3s:v1.34.1-k3s1
+    restart: unless-stopped
+    privileged: true
+    command:
+      - server
+      - --https-listen-port=5443
+      - --write-kubeconfig=/output/kubeconfig.yaml
+      - --write-kubeconfig-mode=644
+      - --node-name=scdb-k3s-test
+      - --kube-apiserver-arg=service-node-port-range=63001-64000
+      - --snapshotter=overlayfs
+    environment:
+      - TZ=America/Montreal
+    ports:
+      - "5443:5443"
+      - "63001-64000:63001-64000"
+    volumes:
+      - /share/CACHEDEV1_DATA/.scdb-test/container-station/var/lib/k3s/etc/rancher:/etc/rancher
+      - /share/CACHEDEV1_DATA/.scdb-test/container-station/var/lib/k3s/var/lib/cni:/var/lib/cni
+      - /share/CACHEDEV1_DATA/.scdb-test/container-station/var/lib/k3s/var/lib/kubelet:/var/lib/kubelet
+      - /share/CACHEDEV1_DATA/.scdb-test/container-station/var/lib/k3s/var/lib/rancher/k3s:/var/lib/rancher/k3s
+      - /share/CACHEDEV1_DATA/.scdb-test/container-station/etc/k3s:/etc/k3s
+      - /share/CACHEDEV1_DATA/.scdb-test/container-station/var/log/container-station/k3s:/var/log
+      - /share/Container/k3s-migration/kubeconfig:/output
+    tmpfs:
+      - /run
+      - /var/run

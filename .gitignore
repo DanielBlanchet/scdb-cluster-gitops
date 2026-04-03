@@ -1,4 +1,5 @@
 docker/compose/scdb-k3s.conf
+docker/scdb-k3s-test/scdb-k3s-test.conf
 scdb-k3s.conf
 apps/WebTs/base/Secrets/db-connection-info.yml
 apps/WebTs/base/Secrets/my-cnf-backup.yml
