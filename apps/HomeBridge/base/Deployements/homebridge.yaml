@@ -19,7 +19,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: homebridge
-          image: harbor.prod.home.dblanchet.net/scdb/homebridge:node24.13.0
+          image: harbor.prod.home.dblanchet.net/scdb/homebridge:node24.14.1
           imagePullPolicy: Always
           ports:
             - containerPort: 8581
