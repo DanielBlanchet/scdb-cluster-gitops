@@ -3,6 +3,6 @@ kind: Kustomization
 
 resources:
   - ../../base
-#  - HTTProutes/test-web-route.yaml
+  - HTTProutes/test-web-route.yaml
 #  - HTTProutes/test-web-secure-route.yaml
 #  - ReferenceGrants/allow-gateway-to-certs.yaml
