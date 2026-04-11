@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: homebridge-test
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:DanielBlanchet/scdb-cluster-gitops.git
+    targetRevision: main
+    path: apps/HomeBridge/overlays/test
+  destination:
+    server: https://scdb-test.home.dblanchet.net:6443
+    namespace: homebridge
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

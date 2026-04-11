@@ -18,6 +18,9 @@
 		};
 		31535E952F7354B000D80947 /* apps */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			explicitFileTypes = {
+				HomeBridge/overlays/test/kustomization.yaml = text.yaml;
+			};
 			path = apps;
 			sourceTree = "<group>";
 		};

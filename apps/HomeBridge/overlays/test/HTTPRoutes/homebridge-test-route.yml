@@ -1,0 +1,20 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: homebridge-route
+  namespace: homebridge
+spec:
+  parentRefs:
+    - name: scdb-gateway
+      namespace: traefik
+      sectionName: http
+  hostnames:
+    - homebridge.test.home.dblanchet.net
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: homebridge
+          port: 8581
