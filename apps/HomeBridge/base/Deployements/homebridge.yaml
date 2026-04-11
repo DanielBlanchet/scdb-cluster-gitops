@@ -15,7 +15,7 @@ spec:
       labels:
         app: homebridge
     spec:
-      hostNetwork: false
+      hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: homebridge
