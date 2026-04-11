@@ -5,8 +5,8 @@ metadata:
   namespace: test
 spec:
   parentRefs:
-    - name: traefik-gateway
-      namespace: default
+    - name: scdb-gateway
+      namespace: traefik
       sectionName: http
   hostnames:
     - web.test.home.dblanchet.net

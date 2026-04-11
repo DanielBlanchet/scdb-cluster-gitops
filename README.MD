@@ -61,8 +61,8 @@ helm install argocd argo/argo-cd \
   -n argocd \
   --create-namespace
 
-# Add TLS CDR
-kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.1.0/experimental-install.yaml
+# Add TLS CRD
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/experimental-install.yaml
 kubectl get crd | grep tlsroute
 
 # Install MetalLB
