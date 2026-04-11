@@ -5,7 +5,7 @@ metadata:
   namespace: test
 spec:
   parentRefs:
-    - name: scdb-gateway
+    - name: test-gateway
       namespace: traefik
       sectionName: http
   hostnames:
