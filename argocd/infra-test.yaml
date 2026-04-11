@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: infrastructure
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:DanielBlanchet/scdb-cluster-gitops.git
+    targetRevision: main
+    path: infrastructure/overlays/test
+  destination:
+    server: https://scdb-test.home.dblanchet.net:6443
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
