@@ -6,3 +6,4 @@ resources:
   - HTTPRoutes/homebridge-prod-route.yml
   - HTTPRoutes/homebridge-prod-secure-route.yml
   - ReferenceGrants/allow-gateway-to-certs.yaml
+  - ConfigMaps/homebridge-env.yml

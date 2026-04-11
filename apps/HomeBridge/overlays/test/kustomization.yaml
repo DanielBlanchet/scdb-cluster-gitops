@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ../../base
   - HTTPRoutes/homebridge-test-route.yml
+  - ConfigMaps/homebridge-env.yml
