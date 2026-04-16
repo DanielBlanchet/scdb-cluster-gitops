@@ -22,7 +22,7 @@ spec:
           command: ['sh', '-c', "until nc -zv mysql-db-svc 3306; do echo waiting; sleep 5; done ; sleep 5"]
       containers:
       - name: crypto-appl
-        image: harbor.prod.home.dblanchet.net/crypto/crypto-appl:v2.0.21
+        image: harbor.prod.home.dblanchet.net/crypto/crypto-appl:v2.0.22
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8052
