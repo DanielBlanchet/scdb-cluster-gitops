@@ -26,7 +26,6 @@ spec:
           command: ['sh', '-c', "until nc -zv mysql-db-svc 3306; do echo waiting; sleep 5; done ; sleep 5"]
       containers:
       - name: crypto-operator
-        image: harbor.prod.home.dblanchet.net/crypto/traders:v2.1.62
         image: harbor.prod.home.dblanchet.net/crypto/traders:v2.1.63
         imagePullPolicy: IfNotPresent
         volumeMounts:
