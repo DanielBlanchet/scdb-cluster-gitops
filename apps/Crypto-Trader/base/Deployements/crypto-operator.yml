@@ -27,6 +27,7 @@ spec:
       containers:
       - name: crypto-operator
         image: harbor.prod.home.dblanchet.net/crypto/traders:v2.1.62
+        image: harbor.prod.home.dblanchet.net/crypto/traders:v2.1.63
         imagePullPolicy: IfNotPresent
         volumeMounts:
           - name: logs-storage
