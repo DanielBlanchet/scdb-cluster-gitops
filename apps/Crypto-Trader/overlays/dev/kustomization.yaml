@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ../../base
   - PersistentVolumeClaim/db-backup.yml
+  - HTTPRoutes/crypto-trade-secure-dev.yaml
