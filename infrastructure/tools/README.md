@@ -1,11 +1,11 @@
 # deprecated_crd.py
 
-Script Python pour lister les CRDs Kubernetes et leurs versions depreciees.
+Python script to list Kubernetes CRDs and their deprecated versions.
 
-## Prerequis
+## Prerequisites
 
 - `python3`
-- `kubectl` configure (kubeconfig + contextes)
+- `kubectl` configured (kubeconfig + contexts)
 
 ## Usage
 
@@ -15,37 +15,37 @@ python3 infrastructure/tools/deprecated_crd.py [options]
 
 ## Options
 
-- `--cluster <nom>`: cible un cluster specifique (selection automatique du contexte associe). Par defaut, un seul contexte par cluster est traite (priorite au contexte qui a le meme nom que le cluster).
-- `--deprecated-only`: affiche uniquement les CRDs ayant au moins une version depreciee.
-- `--output table|csv|json`: format de sortie (`table` par defaut).
-- `--output-file <chemin>`: force le fichier de sortie pour `csv`/`json`.
-- `--list-cluster`: liste les clusters disponibles dans le kubeconfig puis quitte.
+- `--cluster <name>`: target a specific cluster (automatic selection of the associated context). By default, one context per cluster is processed (priority to a context with the same name as the cluster).
+- `--deprecated-only`: show only CRDs that have at least one deprecated version.
+- `--output table|csv|json`: output format (`table` by default).
+- `--output-file <path>`: force output file path for `csv`/`json`.
+- `--list-cluster`: list available clusters from kubeconfig and exit.
 
-## Sorties
+## Outputs
 
-### table (par defaut)
+### table (default)
 
-Affichage console en colonnes:
+Console output in columns:
 
 - `CRDs`
 - `Latest`
 - `Deprecated`
 - `Reason`
 
-Si un CRD a plusieurs versions depreciees, il apparait sur plusieurs lignes.
+If a CRD has multiple deprecated versions, it appears on multiple lines.
 
 ### csv
 
-- 1 ligne par CRD (sortie agregee)
-- colonnes: `Context, CRDs, Latest, Deprecated, Reason`
-- si plusieurs versions depreciees, elles sont dans la meme cellule, separees par un retour a la ligne
-- fichier par defaut:
-  - un seul cluster cible: `<cluster>.csv`
-  - plusieurs clusters: `all-contexts.csv`
+- 1 row per CRD (aggregated output)
+- columns: `Context, CRDs, Latest, Deprecated, Reason`
+- if there are multiple deprecated versions, they are kept in the same cell, separated by newline
+- default filename:
+  - single targeted cluster: `<cluster>.csv`
+  - multiple clusters: `all-contexts.csv`
 
 ### json
 
-- 1 objet par CRD (sortie agregee)
+- 1 object per CRD (aggregated output)
 - format:
 
 ```json
@@ -59,28 +59,28 @@ Si un CRD a plusieurs versions depreciees, il apparait sur plusieurs lignes.
 }
 ```
 
-- fichier par defaut:
-  - un seul cluster cible: `<cluster>.json`
-  - plusieurs clusters: `all-contexts.json`
+- default filename:
+  - single targeted cluster: `<cluster>.json`
+  - multiple clusters: `all-contexts.json`
 
-## Exemples
+## Examples
 
 ```bash
-# Affichage table (un contexte par cluster)
+# Table output (one context per cluster)
 python3 infrastructure/tools/deprecated_crd.py
 
-# Lister les clusters disponibles
+# List available clusters
 python3 infrastructure/tools/deprecated_crd.py --list-cluster
 
-# Un seul cluster
+# Single cluster
 python3 infrastructure/tools/deprecated_crd.py --cluster prod
 
-# Uniquement les CRDs depreciees
+# Deprecated CRDs only
 python3 infrastructure/tools/deprecated_crd.py --deprecated-only
 
-# Export CSV
+# CSV export
 python3 infrastructure/tools/deprecated_crd.py --cluster prod --output csv
 
-# Export JSON avec chemin force
+# JSON export with explicit output path
 python3 infrastructure/tools/deprecated_crd.py --cluster prod --output json --output-file /tmp/crds-prod.json
 ```
