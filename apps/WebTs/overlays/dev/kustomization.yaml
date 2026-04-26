@@ -4,7 +4,7 @@ kind: Kustomization
 resources:
   - ../../base
   - PersistentVolumeClaim/db-backup.yml
-  - HTTProutes/webts-dev.yml
+  - HTTProutes/webts-secure-route.yml
 
 #patchesStrategicMerge:
 #  - Deployements/nginx-php-patch.yaml
