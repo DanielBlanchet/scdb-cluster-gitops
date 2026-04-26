@@ -96,23 +96,7 @@ kubectl apply -f infrastructure/base/MetalLB/metallb-l2advertisement.yaml
 kubectl -n kube-system delete pod -l k8s-app=kube-dns
 
 # List tous les version des CRDs.
-kubectl get crd -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range .spec.versions[*]}{.name}{":served="}{.served}{",storage="}{.storage}{" "}{end}{"\n"}{end}' \
-| column -t -s $'\t'
-
-kubectl get crd -o json | jq -r '
-["CRD","VERSION","SERVED","STORAGE"],
-(.items[] |
- select(.metadata.name | contains("gateway.networking.k8s.io")) |
- .metadata.name as $name |
- .spec.versions[] |
- [$name, .name, (.served|tostring), (.storage|tostring)]
-) | @tsv' | column -t
-
-kubectl get crd -o json | jq -r '
-["CRD","VERSION","SERVED","STORAGE"],
-(.items[] |
- select(.metadata.name) |
- .metadata.name as $name |
- .spec.versions[] |
- [$name, .name, (.served|tostring), (.storage|tostring)]
-) | @tsv' | column -t
+cluster=scdb-k3s
+cluster=kubernetes
+cluster=docker-desktop
+~/Project/SCDB/scdb-k3s/infrastructure/tools/deprecated_crd.py --deprecated-only
