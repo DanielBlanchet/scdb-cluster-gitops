@@ -8,7 +8,6 @@ resources:
   - ConfigMaps/mysqld-sh.yml
   - Services/mysql-db-svc.yml
   - Services/crypto-web-svc.yml
-  - PersistentVolumeClaim/db-backup.yml
   - PersistentVolumeClaim/logs.yml
   - Statefulset/mysql-db.yml
   - CronJobs/mysql-backup.yaml

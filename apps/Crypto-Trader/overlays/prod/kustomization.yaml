@@ -3,6 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../base
+  - PersistentVolumeClaim/db-backup.yml
   - ReferenceGrants/allow-gateway-to-certs.yaml
   - HTTPRoutes/crypto-trade-secrue-prod.yaml
 
