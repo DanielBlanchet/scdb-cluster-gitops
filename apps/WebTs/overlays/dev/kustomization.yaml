@@ -6,6 +6,3 @@ resources:
   - PersistentVolumeClaim/db-backup.yml
   - HTTProutes/webts-secure-route.yml
   - ReferenceGrants/allow-gateway-to-certs.yaml
-
-#patchesStrategicMerge:
-#  - Deployements/nginx-php-patch.yaml
