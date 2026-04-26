@@ -5,3 +5,4 @@ resources:
   - coredns.yaml
   - Gateway.yaml
   - HTTProutes/argocd-secure-dev.yaml
+  - ReferenceGrants/allow-gateway-to-certs-argocd.yaml
