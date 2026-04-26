@@ -17,6 +17,7 @@ container=k3s-scdb-1.34
 cd docker/compose
 
 # install traefik
+# URL: https://github.com/kubernetes-sigs/gateway-api/releases/
 helm repo update
 helm upgrade --install traefik traefik/traefik --namespace kube-system --values ~/Projets/SCDB/Build_kube_cluster/vars/traefik.yml
 
@@ -25,7 +26,12 @@ kubectl get crd | grep gateway
 
 # update traefik crd
 kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/experimental-install.yaml
+kubectl apply --server-side=true -f https://github.com/kubernetes-sigs/gateway-api/releases/download/monthly-2026.04/monthly-2026.04-install.yaml
           
+# Check traefic TLSroute api version
+kubectl get crd tlsroutes.gateway.networking.k8s.io \
+  -o jsonpath='{range .spec.versions[*]}{.name}{" served="}{.served}{" storage="}{.storage}{"\n"}{end}'
+
 # setup de trefick
 docker cp ./traefik-config.yaml ${container}:/var/lib/rancher/k3s/server/manifests/traefik-config.yaml
 
@@ -88,3 +94,25 @@ kubectl apply -f infrastructure/base/MetalLB/metallb-l2advertisement.yaml
 
 # Restat Core DNS
 kubectl -n kube-system delete pod -l k8s-app=kube-dns
+
+# List tous les version des CRDs.
+kubectl get crd -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{range .spec.versions[*]}{.name}{":served="}{.served}{",storage="}{.storage}{" "}{end}{"\n"}{end}' \
+| column -t -s $'\t'
+
+kubectl get crd -o json | jq -r '
+["CRD","VERSION","SERVED","STORAGE"],
+(.items[] |
+ select(.metadata.name | contains("gateway.networking.k8s.io")) |
+ .metadata.name as $name |
+ .spec.versions[] |
+ [$name, .name, (.served|tostring), (.storage|tostring)]
+) | @tsv' | column -t
+
+kubectl get crd -o json | jq -r '
+["CRD","VERSION","SERVED","STORAGE"],
+(.items[] |
+ select(.metadata.name) |
+ .metadata.name as $name |
+ .spec.versions[] |
+ [$name, .name, (.served|tostring), (.storage|tostring)]
+) | @tsv' | column -t
