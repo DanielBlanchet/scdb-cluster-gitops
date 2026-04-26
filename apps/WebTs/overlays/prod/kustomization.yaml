@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - ../../base
   - ReferenceGrants/allow-gateway-to-certs.yaml
+  - PersistentVolumeClaim/db-backup.yml
   - HTTPRoutes/webts-secure-route.yaml
 
 #patchesStrategicMerge:

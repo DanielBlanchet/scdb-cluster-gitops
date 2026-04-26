@@ -1,0 +1,47 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: scdb-gateway
+  namespace: default
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 8000
+      hostname: "*.dev.home.dblanchet.net"
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-dev-argocd
+      protocol: HTTPS
+      port: 8443
+      hostname: argocd.dev.home.dblanchet.net
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: argocd-dev-tls
+            namespace: argocd
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              kubernetes.io/metadata.name: argocd
+    - name: https-dev-webts
+      protocol: HTTPS
+      port: 8443
+      hostname: webts.dev.home.dblanchet.net
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: webts-web-dev-ssl
+            namespace: webts
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              kubernetes.io/metadata.name: webts

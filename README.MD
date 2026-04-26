@@ -16,6 +16,16 @@ kubectl label node scdb-k3s node-role.kubernetes.io/worker=worker
 container=k3s-scdb-1.34
 cd docker/compose
 
+# install traefik
+helm repo update
+helm upgrade --install traefik traefik/traefik --namespace kube-system --values ~/Projets/SCDB/Build_kube_cluster/vars/traefik.yml
+
+# Check traefik crd
+kubectl get crd | grep gateway
+
+# update traefik crd
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/experimental-install.yaml
+          
 # setup de trefick
 docker cp ./traefik-config.yaml ${container}:/var/lib/rancher/k3s/server/manifests/traefik-config.yaml
 
@@ -32,6 +42,10 @@ nslookup dns01.home.dblanchet.net
 # Configure GatewayAPI
 cd ~/Projets/SCDB/scdb-k3s/GateWayAPI
 kubeconfig create -f GatewayClass.yaml
+
+# Configure Gateway
+# dev
+kubectl create -f ~/Projets/SCDB/scdb-k3s/infrastructure/overlays/dev/Gateway.yaml
 
 # Configure test.
 cd ~/Projets/SCDB/scdb-k3s/Test
@@ -71,3 +85,6 @@ kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/confi
 
 kubectl apply -f infrastructure/base/MetalLB/metallb-ipaddresspool.yaml
 kubectl apply -f infrastructure/base/MetalLB/metallb-l2advertisement.yaml
+
+# Restat Core DNS
+kubectl -n kube-system delete pod -l k8s-app=kube-dns

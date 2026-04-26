@@ -3,8 +3,8 @@ kind: Kustomization
 
 resources:
   - ../../base
-  - Ingress/webts-dev-ingress.yml
-#  - HTTProutes/webts-dev.yml
+  - PersistentVolumeClaim/db-backup.yml
+  - HTTProutes/webts-dev.yml
 
 #patchesStrategicMerge:
 #  - Deployements/nginx-php-patch.yaml

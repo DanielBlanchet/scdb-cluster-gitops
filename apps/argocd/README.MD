@@ -15,13 +15,14 @@ kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.pas
 # Create webts ssl certificate / secret
 
 env=prod
+env=dev
 site=argocd.${env}.home.dblanchet.net
-name=argocd-${env}-ssl
+3=argocd-${env}-ssl
 email='daniel@dblanchet.net'
 namespace=argocd
 
 cd /tmp
-site=argocd.prod.home.dblanchet.net
+site=argocd.${env}.home.dblanchet.net
 email='daniel@dblanchet.net'
 ~/Projets/scripts/build_ssl.py -d $site --country CA --state Quebec --city "La Prairie" --organization "SCDB inc." --ou Infra --email $email
 
