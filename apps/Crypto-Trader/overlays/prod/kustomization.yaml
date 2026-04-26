@@ -5,7 +5,7 @@ resources:
   - ../../base
   - PersistentVolumeClaim/db-backup.yml
   - ReferenceGrants/allow-gateway-to-certs.yaml
-  - HTTPRoutes/crypto-trade-secrue-prod.yaml
+  - HTTPRoutes/crypto-trade-secure-prod.yaml
 
 #patchesStrategicMerge:
 #  - Deployements/nginx-php-patch.yaml
