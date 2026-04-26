@@ -5,3 +5,4 @@ resources:
   - ../../base
   - PersistentVolumeClaim/db-backup.yml
   - HTTPRoutes/crypto-trade-secure-dev.yaml
+  - ReferenceGrants/allow-gateway-to-certs.yaml
