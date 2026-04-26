@@ -86,6 +86,26 @@ def get_crds(context: str) -> list[dict[str, Any]]:
     return data.get("items", [])
 
 
+def get_cluster_version(context: str) -> str:
+    output = run_kubectl(["kubectl", "--context", context, "version", "-o", "json"])
+    try:
+        data = json.loads(output)
+    except json.JSONDecodeError as exc:
+        raise RuntimeError(f"Invalid JSON returned by kubectl version for context '{context}': {exc}") from exc
+
+    server_version = data.get("serverVersion", {})
+    git_version = server_version.get("gitVersion", "").strip()
+    if git_version:
+        return git_version
+
+    major = str(server_version.get("major", "")).strip()
+    minor = str(server_version.get("minor", "")).strip()
+    if major and minor:
+        return f"v{major}.{minor}"
+
+    return "unknown"
+
+
 def get_context_cluster_map(kubeconfig: dict[str, Any]) -> dict[str, str]:
     mapping: dict[str, str] = {}
     for context_entry in kubeconfig.get("contexts", []):
@@ -163,10 +183,10 @@ def aggregate_machine_rows(machine_rows: list[dict[str, str]]) -> list[dict[str,
     grouped: dict[tuple[str, str, str], dict[str, Any]] = {}
 
     for row in machine_rows:
-        key = (row["Context"], row["CRDs"], row["Latest"])
+        key = (row["Cluster"], row["CRDs"], row["Latest"])
         if key not in grouped:
             grouped[key] = {
-                "Context": row["Context"],
+                "Cluster": row["Cluster"],
                 "CRDs": row["CRDs"],
                 "Latest": row["Latest"],
                 "Deprecated": [],
@@ -222,17 +242,28 @@ def main() -> int:
 
     if args.list_cluster:
         try:
-            clusters = list_clusters(kubeconfig)
+            contexts = get_contexts(None, kubeconfig)
+            context_cluster_map = get_context_cluster_map(kubeconfig)
         except RuntimeError as exc:
             print(f"Error while listing clusters: {exc}", file=sys.stderr)
             return 1
 
-        if not clusters:
+        if not contexts:
             print("No clusters found in kubeconfig.")
             return 0
 
-        for cluster in clusters:
-            print(cluster)
+        cluster_version_cache: dict[str, str] = {}
+        for ctx in contexts:
+            cluster_name = context_cluster_map.get(ctx, ctx)
+            if cluster_name in cluster_version_cache:
+                continue
+            try:
+                cluster_version_cache[cluster_name] = get_cluster_version(ctx)
+            except RuntimeError:
+                cluster_version_cache[cluster_name] = "unknown"
+
+        for cluster_name in sorted(cluster_version_cache):
+            print(f"{cluster_name} ({cluster_version_cache[cluster_name]})")
         return 0
 
     try:
@@ -253,7 +284,7 @@ def main() -> int:
             with open(output_path, "w", newline="", encoding="utf-8") as fp:
                 writer = csv.DictWriter(
                     fp,
-                    fieldnames=["Context", "CRDs", "Latest", "Deprecated", "Reason"],
+                    fieldnames=["Cluster", "CRDs", "Latest", "Deprecated", "Reason"],
                 )
                 writer.writeheader()
             print(f"Output written to {output_path}", file=sys.stderr)
@@ -263,12 +294,19 @@ def main() -> int:
 
     exit_code = 0
     machine_rows: list[dict[str, str]] = []
+    cluster_version_cache: dict[str, str] = {}
 
     for ctx in contexts:
         if args.output == "table":
             cluster_display_name = context_cluster_map.get(ctx, ctx)
+            if cluster_display_name not in cluster_version_cache:
+                try:
+                    cluster_version_cache[cluster_display_name] = get_cluster_version(ctx)
+                except RuntimeError:
+                    cluster_version_cache[cluster_display_name] = "unknown"
+            cluster_version = cluster_version_cache[cluster_display_name]
             print("==============================")
-            print(f"Cluster: {cluster_display_name}")
+            print(f"Cluster: {cluster_display_name} ({cluster_version})")
             print("==============================")
 
         try:
@@ -294,9 +332,10 @@ def main() -> int:
             continue
 
         for crd_name, latest, deprecated, reason in displayed_versions:
+            cluster_name = context_cluster_map.get(ctx, ctx)
             machine_rows.append(
                 {
-                    "Context": ctx,
+                    "Cluster": cluster_name,
                     "CRDs": crd_name,
                     "Latest": latest,
                     "Deprecated": deprecated,
@@ -315,13 +354,13 @@ def main() -> int:
             with open(output_path, "w", newline="", encoding="utf-8") as fp:
                 writer = csv.DictWriter(
                     fp,
-                    fieldnames=["Context", "CRDs", "Latest", "Deprecated", "Reason"],
+                    fieldnames=["Cluster", "CRDs", "Latest", "Deprecated", "Reason"],
                 )
                 writer.writeheader()
                 for row in aggregated_rows:
                     deprecated_entries = row["Deprecated"]
                     csv_row = {
-                        "Context": row["Context"],
+                        "Cluster": row["Cluster"],
                         "CRDs": row["CRDs"],
                         "Latest": row["Latest"],
                         "Deprecated": "\n".join(item["version"] for item in deprecated_entries) if deprecated_entries else "-",

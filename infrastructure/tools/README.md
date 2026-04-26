@@ -19,7 +19,7 @@ python3 infrastructure/tools/deprecated_crd.py [options]
 - `--deprecated-only`: show only CRDs that have at least one deprecated version.
 - `--output table|csv|json`: output format (`table` by default).
 - `--output-file <path>`: force output file path for `csv`/`json`.
-- `--list-cluster`: list available clusters from kubeconfig and exit.
+- `--list-cluster`: list available clusters from kubeconfig (with Kubernetes version) and exit.
 
 ## Outputs
 
@@ -37,7 +37,7 @@ If a CRD has multiple deprecated versions, it appears on multiple lines.
 ### csv
 
 - 1 row per CRD (aggregated output)
-- columns: `Context, CRDs, Latest, Deprecated, Reason`
+- columns: `Cluster, CRDs, Latest, Deprecated, Reason`
 - if there are multiple deprecated versions, they are kept in the same cell, separated by newline
 - default filename:
   - single targeted cluster: `<cluster>.csv`
@@ -50,7 +50,7 @@ If a CRD has multiple deprecated versions, it appears on multiple lines.
 
 ```json
 {
-  "Context": "...",
+  "Cluster": "...",
   "CRDs": "...",
   "Latest": "...",
   "Deprecated": [
