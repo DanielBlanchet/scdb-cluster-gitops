@@ -37,6 +37,11 @@ spec:
           value: webts
         - name: WebTS_PW
           value: tsweb
+        - name: TestDB
+          valueFrom:
+            secretKeyRef:
+              name: webts-web
+              key: WebTS_DB
         image: harbor.prod.home.dblanchet.net/scdb/nginx-php:v4.0.8
         imagePullPolicy: IfNotPresent
         name: nginx-php
@@ -52,16 +57,10 @@ spec:
         - mountPath: /var/lib/appl
           name: config-cfg
           readOnly: true
-#        - mountPath: /var/lib/appl/ssl
-#          name: webts-ssl
-#          readOnly: true
         - mountPath: /var/lib/appl/db
           name: db-info
           readOnly: true
       dnsPolicy: ClusterFirst
-#      imagePullSecrets:
-#      - name: docker-io-pull-secret
-#      - name: harbor-pull-secret
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
@@ -71,10 +70,10 @@ spec:
         secret:
           defaultMode: 420
           secretName: webts-config-cfg
-#      - name: webts-ssl
-#        secret:
-#          defaultMode: 420
-#          secretName: webts-ssl
+      - name: webts-web
+        secret:
+          defaultMode: 420
+          secretName: webts-web
       - name: db-info
         secret:
           defaultMode: 420
