@@ -32,16 +32,20 @@ spec:
         - name: TZ
           value: America/Montreal
         - name: WebTS_DB
-          value: webts-db-svc:3306
-        - name: WebTS_USER
-          value: webts
-        - name: WebTS_PW
-          value: tsweb
-        - name: TestDB
           valueFrom:
             secretKeyRef:
               name: webts-web
               key: WebTS_DB
+        - name: WebTS_USER
+          valueFrom:
+            secretKeyRef:
+              name: webts-web
+              key: WebTS_USER
+        - name: WebTS_PW
+          valueFrom:
+            secretKeyRef:
+              name: webts-web
+              key: WebTS_PW
         image: harbor.prod.home.dblanchet.net/scdb/nginx-php:v4.0.8
         imagePullPolicy: IfNotPresent
         name: nginx-php
