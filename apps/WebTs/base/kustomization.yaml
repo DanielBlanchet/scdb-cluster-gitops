@@ -10,4 +10,4 @@ resources:
   - Services/web-svc.yml
   - Statefulset/mysql-db-cluster.yml
   - CronJobs/mysql-backup.yml
-  - Deployements/nginx-php.yml
+  - Deployements/webts-appl.yml
