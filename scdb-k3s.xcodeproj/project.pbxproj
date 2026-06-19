@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		31A9BF172FE4C1E4000570F7 /* argocd-values.yaml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = "argocd-values.yaml"; sourceTree = "<group>"; };
 		31C720ED2F7216C50028C4D6 /* README.MD */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.MD; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -40,6 +41,7 @@
 		31C720D62F709C0B0028C4D6 = {
 			isa = PBXGroup;
 			children = (
+				31A9BF172FE4C1E4000570F7 /* argocd-values.yaml */,
 				31535EA02F73571F00D80947 /* argocd */,
 				31535E952F7354B000D80947 /* apps */,
 				31535E922F73540E00D80947 /* infrastructure */,

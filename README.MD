@@ -20,6 +20,7 @@ cd docker/compose
 # URL: https://github.com/kubernetes-sigs/gateway-api/releases/
 helm repo update
 helm upgrade --install traefik traefik/traefik --namespace kube-system --values ~/Projets/SCDB/Build_kube_cluster/vars/traefik.yml
+helm upgrade traefik traefik/traefik 
 
 # Check traefik crd
 kubectl get crd | grep gateway
@@ -45,7 +46,7 @@ kubectl delete pod -n kube-system -l k8s-app=kube-dns
 debugger
 nslookup dns01.home.dblanchet.net
 
-# Configure GatewayAPI
+# Configure GatewayAPIfargocd
 cd ~/Projets/SCDB/scdb-k3s/GateWayAPI
 kubeconfig create -f GatewayClass.yaml
 
@@ -80,6 +81,8 @@ helm repo update
 helm install argocd argo/argo-cd \
   -n argocd \
   --create-namespace
+  
+helm upgrade argocd argo/argo-cd
 
 # Add TLS CRD
 kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/experimental-install.yaml
@@ -100,3 +103,21 @@ cluster=scdb-k3s
 cluster=kubernetes
 cluster=docker-desktop
 ~/Project/SCDB/scdb-k3s/infrastructure/tools/deprecated_crd.py --deprecated-only
+
+# Upgrade argocd
+
+kubectl -n argocd get cm argocd-ssh-known-hosts-cm -o yaml > /tmp/argocd-ssh-known-hosts-cm.backup.yaml
+kubectl -n argocd get cm argocd-ssh-known-hosts-cm \
+  -o jsonpath='{.data.ssh_known_hosts}' > /tmp/ssh_known_hosts.current
+  
+vi values.yaml
+configs:
+  params:
+    # Requis quand le TLS est terminé par Gateway API / Envoy / Traefik
+    # Sinon argocd-server force HTTPS et le service port 80 ne répond plus correctement
+    server.insecure: true
+  ssh:
+    knownHosts: |
+      {contents of /tmp/ssh_known_hosts.current}
+      
+helm -n argocd upgrade argocd argo/argo-cd -f values.yaml
