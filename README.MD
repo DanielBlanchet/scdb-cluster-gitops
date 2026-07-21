@@ -135,3 +135,17 @@ helm install metrics-server metrics-server/metrics-server \
   --set 'defaultArgs[3]=--metric-resolution=15s' \
   --set 'args[0]=--kubelet-insecure-tls'
 
+# goldilocks
+# Add new repo 
+$ helm repo add fairwinds-stable https://charts.fairwinds.com/stable
+$ helm repo list   
+$ helm repo update fairwinds-stable"
+
+# Install VPA 
+$ helm install vpa fairwinds-stable/vpa --namespace vpa --create-namespace
+$ kubectl get pod -n vpa
+
+# Create namespace
+$ kubectl create namespace goldilocks
+$ kubect get ns
+$ helm install goldilocks --namespace goldilocks fairwinds-stable/goldilocks"
