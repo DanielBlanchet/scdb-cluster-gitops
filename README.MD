@@ -121,3 +121,31 @@ configs:
       {contents of /tmp/ssh_known_hosts.current}
       
 helm -n argocd upgrade argocd argo/argo-cd -f values.yaml
+
+
+# Install Kubernetes metric.
+
+helm repo add metrics-server https://kubernetes-sigs.github.io/metrics-server/
+helm repo update
+helm install metrics-server metrics-server/metrics-server \
+  -n kube-system \
+  --set 'defaultArgs[0]=--cert-dir=/tmp' \
+  --set 'defaultArgs[1]=--kubelet-preferred-address-types=InternalIP' \
+  --set 'defaultArgs[2]=--kubelet-use-node-status-port' \
+  --set 'defaultArgs[3]=--metric-resolution=15s' \
+  --set 'args[0]=--kubelet-insecure-tls'
+
+# goldilocks
+# Add new repo 
+$ helm repo add fairwinds-stable https://charts.fairwinds.com/stable
+$ helm repo list   
+$ helm repo update fairwinds-stable"
+
+# Install VPA 
+$ helm install vpa fairwinds-stable/vpa --namespace vpa --create-namespace
+$ kubectl get pod -n vpa
+
+# Create namespace
+$ kubectl create namespace goldilocks
+$ kubect get ns
+$ helm install goldilocks --namespace goldilocks fairwinds-stable/goldilocks"
