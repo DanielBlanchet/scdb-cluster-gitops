@@ -149,3 +149,8 @@ $ kubectl get pod -n vpa
 $ kubectl create namespace goldilocks
 $ kubect get ns
 $ helm install goldilocks --namespace goldilocks fairwinds-stable/goldilocks"
+
+# label ns.
+$ kubectl label ns crypto-trader goldilocks.fairwinds.com/enabled=true
+$ kubectl label ns argocd goldilocks.fairwinds.com/enabled=true
+$ kubectl label ns webts goldilocks.fairwinds.com/enabled=true
