@@ -46,7 +46,7 @@ kubectl delete pod -n kube-system -l k8s-app=kube-dns
 debugger
 nslookup dns01.home.dblanchet.net
 
-# Configure GatewayAPIfargocd
+# Configure GatewayAPI
 cd ~/Projets/SCDB/scdb-k3s/GateWayAPI
 kubeconfig create -f GatewayClass.yaml
 

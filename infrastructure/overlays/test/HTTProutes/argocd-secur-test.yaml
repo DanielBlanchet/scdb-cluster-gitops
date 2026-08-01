@@ -1,0 +1,20 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: argocd-route-tls
+  namespace: argocd
+spec:
+  parentRefs:
+    - name: scdb-gateway
+      namespace: default
+      sectionName: https-test-argocd
+  hostnames:
+    - argocd.test.home.dblanchet.net
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: argocd-server
+          port: 80

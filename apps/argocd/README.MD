@@ -22,7 +22,7 @@ email='daniel@dblanchet.net'
 namespace=argocd
 
 cd /tmp
-site=argocd.${env}.home.dblanchet.net
+site=argocd.${siteEnv}.home.dblanchet.net
 email='daniel@dblanchet.net'
 ~/Projets/scripts/build_ssl.py -d $site --country CA --state Quebec --city "La Prairie" --organization "SCDB inc." --ou Infra --email $email
 
@@ -35,3 +35,7 @@ kubectl create secret tls argocd-prod-tls --cert=ssl/$site.cert.pem --key=ssl/$s
 cd ~/Projets/SCDB/scdb-k3s
 kubectl create -f apps/argocd/base/ReferenceGrants/allow-gateway-to-certs.yaml
 kubectl create -f apps/argocd/base/HTTPRoutes/argocd-secure-prod.yaml
+
+# Argocd Upgrade
+
+helm upgrade argocd argo/argo-cd --values  ~/Projets/SCDB/scdb-k3s/apps/argocd/base/helm/values.yaml
