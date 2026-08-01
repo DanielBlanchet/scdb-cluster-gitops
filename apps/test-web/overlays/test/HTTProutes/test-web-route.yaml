@@ -5,7 +5,7 @@ metadata:
   namespace: test
 spec:
   parentRefs:
-    - name: test-gateway
+    - name: scdb-gateway
       namespace: default
       sectionName: http
   hostnames:
