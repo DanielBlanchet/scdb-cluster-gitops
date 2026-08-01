@@ -2,7 +2,7 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: test-gateway
-  namespace: traefik
+  namespace: default
 spec:
   gatewayClassName: traefik
   listeners:
