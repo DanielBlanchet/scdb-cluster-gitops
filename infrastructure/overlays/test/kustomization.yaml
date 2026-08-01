@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - Gateway.yaml
   - HTTProutes/argocd-secure-test.yaml
+  - ReferenceGrants/allow-gateway-to-certs-argocd.yaml
