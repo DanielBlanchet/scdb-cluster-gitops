@@ -6,7 +6,7 @@ metadata:
 spec:
   parentRefs:
     - name: test-gateway
-      namespace: traefik
+      namespace: default
       sectionName: http
   hostnames:
     - web.test.home.dblanchet.net
