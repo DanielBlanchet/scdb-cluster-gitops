@@ -12,9 +12,26 @@ spec:
     - harbor.prod.home.dblanchet.net
   rules:
     - matches:
-        - path:
-            type: PathPrefix
-            value: /
+      - path:
+          type: PathPrefix
+          value: /api/
+      - path:
+          type: PathPrefix
+          value: /service/
+      - path:
+          type: PathPrefix
+          value: /v2/
+      - path:
+          type: PathPrefix
+          value: /c/
       backendRefs:
-        - name: harbor-portal
-          port: 80
+      - name: harbor-core
+        port: 80
+
+    - matches:
+      - path:
+          type: PathPrefix
+          value: /
+      backendRefs:
+      - name: harbor-portal
+        port: 80
