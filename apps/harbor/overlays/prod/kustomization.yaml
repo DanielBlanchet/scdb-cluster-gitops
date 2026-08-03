@@ -3,5 +3,5 @@ kind: Kustomization
 
 resources:
   - ReferenceGrants/allow-gateway-to-certs.yaml
-#  - HTTPRoutes/harbor-secure-route.yaml
-  - Ingress/harbor-ingress.yaml
+  - HTTPRoutes/harbor-secure-route.yaml
+#  - Ingress/harbor-ingress.yaml
