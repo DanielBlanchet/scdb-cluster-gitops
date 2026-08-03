@@ -7,14 +7,14 @@ spec:
   parentRefs:
     - name: scdb-gateway
       namespace: default
-      sectionName: https-prod-argocd
+      sectionName: https-prod-harbor
   hostnames:
-    - argocd.prod.home.dblanchet.net
+    - harbor.prod.home.dblanchet.net
   rules:
     - matches:
         - path:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: argocd-server
+        - name: harbor-portal
           port: 80
