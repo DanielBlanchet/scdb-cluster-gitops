@@ -26,7 +26,7 @@ helm upgrade traefik traefik/traefik
 kubectl get crd | grep gateway
 
 # update traefik crd
-kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/experimental-install.yaml
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/experimental-install.yaml
 kubectl apply --server-side=true -f https://github.com/kubernetes-sigs/gateway-api/releases/download/monthly-2026.04/monthly-2026.04-install.yaml
           
 # Check traefic TLSroute api version

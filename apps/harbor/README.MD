@@ -34,3 +34,8 @@ cd ${site}:443
 kubectl get secrets harbor-ingress -o json | jq -r '.data["tls.crt"]' | base64 -d > ${site}.crt
 kubectl get secrets harbor-ingress -o json | jq -r '.data["ca.crt"]' | base64 -d > harbor_ca.crt
 
+# Update
+
+helm repo update
+helm upgrade harbor harbor/harbor -f ~/Projets/SCDB/scdb-k3s/apps/harbor/helm/values.yaml
+
