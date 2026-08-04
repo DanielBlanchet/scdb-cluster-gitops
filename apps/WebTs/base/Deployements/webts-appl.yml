@@ -46,7 +46,7 @@ spec:
             secretKeyRef:
               name: webts-web
               key: WebTS_PW
-        image: harbor.prod.home.dblanchet.net/scdb/webts-appl:v2.0.1
+        image: harbor.prod.home.dblanchet.net/scdb/webts-appl:v2.0.2
         imagePullPolicy: IfNotPresent
         name: nginx-php
         ports:
