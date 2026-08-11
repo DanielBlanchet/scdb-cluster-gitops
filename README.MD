@@ -20,14 +20,15 @@ cd docker/compose
 # URL: https://github.com/kubernetes-sigs/gateway-api/releases/
 helm repo update
 helm upgrade --install traefik traefik/traefik --namespace kube-system --values ~/Projets/SCDB/Build_kube_cluster/vars/traefik.yml
+helm upgrade --install traefik traefik/traefik --namespace kube-system --values ~/Projets/SCDB/scdb-k3s/infrastructure/overlays/prod/traefik-config.yaml
 helm upgrade traefik traefik/traefik 
 
 # Check traefik crd
 kubectl get crd | grep gateway
 
 # update traefik crd
-kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/experimental-install.yaml
-kubectl apply --server-side=true -f https://github.com/kubernetes-sigs/gateway-api/releases/download/monthly-2026.04/monthly-2026.04-install.yaml
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/experimental-install.yaml
+kubectl apply --server-side=true -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/experimental-install.yaml
           
 # Check traefic TLSroute api version
 kubectl get crd tlsroutes.gateway.networking.k8s.io \
@@ -46,9 +47,9 @@ kubectl delete pod -n kube-system -l k8s-app=kube-dns
 debugger
 nslookup dns01.home.dblanchet.net
 
-# Configure GatewayAPIfargocd
+# Configure GatewayAPI
 cd ~/Projets/SCDB/scdb-k3s/GateWayAPI
-kubeconfig create -f GatewayClass.yaml
+kubectl create -f ./infrastructure/base/GatewayClass.yaml
 
 # Configure Gateway
 # dev
