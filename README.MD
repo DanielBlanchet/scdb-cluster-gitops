@@ -28,8 +28,11 @@ kubectl get crd | grep gateway
 
 # update traefik crd
 kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/experimental-install.yaml
-kubectl apply --server-side=true -f https://github.com/kubernetes-sigs/gateway-api/releases/download/monthly-2026.04/monthly-2026.04-install.yaml
 kubectl apply --server-side=true -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/experimental-install.yaml
+
+# Add TLS CRD
+kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/experimental-install.yaml
+kubectl get crd | grep tlsroute
 
 # Check traefic TLSroute api version
 kubectl get crd tlsroutes.gateway.networking.k8s.io \
@@ -49,8 +52,7 @@ debugger
 nslookup dns01.home.dblanchet.net
 
 # Configure GatewayAPI
-cd ~/Projets/SCDB/scdb-k3s/GateWayAPI
-kubeconfig create -f GatewayClass.yaml
+kubeconfig create -f ~/Projets/SCDB/scdb-k3s/infrastructure/base/GatewayClass.yaml
 
 # Configure Gateway
 # dev
@@ -86,9 +88,6 @@ helm install argocd argo/argo-cd \
   
 helm upgrade argocd argo/argo-cd
 
-# Add TLS CRD
-kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.5.1/experimental-install.yaml
-kubectl get crd | grep tlsroute
 
 # Install MetalLB
 
