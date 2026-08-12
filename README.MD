@@ -20,6 +20,7 @@ cd docker/compose
 # URL: https://github.com/kubernetes-sigs/gateway-api/releases/
 helm repo update
 helm upgrade --install traefik traefik/traefik --namespace kube-system --values ~/Projets/SCDB/Build_kube_cluster/vars/traefik.yml
+helm upgrade --install traefik traefik/traefik -n kube-system --values ~/Projets/SCDB/scdb-k3s/infrastructure/overlays/prod/traefik-prod.yaml 
 helm upgrade traefik traefik/traefik 
 
 # Check traefik crd
@@ -28,7 +29,8 @@ kubectl get crd | grep gateway
 # update traefik crd
 kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/experimental-install.yaml
 kubectl apply --server-side=true -f https://github.com/kubernetes-sigs/gateway-api/releases/download/monthly-2026.04/monthly-2026.04-install.yaml
-          
+kubectl apply --server-side=true -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.6.1/experimental-install.yaml
+
 # Check traefic TLSroute api version
 kubectl get crd tlsroutes.gateway.networking.k8s.io \
   -o jsonpath='{range .spec.versions[*]}{.name}{" served="}{.served}{" storage="}{.storage}{"\n"}{end}'
