@@ -26,6 +26,7 @@ func main() {
 		context.Background(),
 		image,
 		artifact,
+		"",
 	)
 	if err != nil {
 		log.Fatal(err)

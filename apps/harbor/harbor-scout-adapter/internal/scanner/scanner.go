@@ -31,9 +31,10 @@ type Job struct {
 }
 
 type request struct {
-	id       string
-	image    string
-	artifact converter.Artifact
+	id            string
+	image         string
+	artifact      converter.Artifact
+	authorization string
 }
 
 type Service struct {
@@ -71,6 +72,7 @@ func newService(path string, scout *Scout) *Service {
 func (s *Service) Submit(
 	artifact converter.Artifact,
 	image string,
+	authorization string,
 ) (string, error) {
 	if image == "" {
 		return "", fmt.Errorf("image reference is empty")
@@ -85,9 +87,10 @@ func (s *Service) Submit(
 	now := time.Now()
 
 	req := request{
-		id:       id,
-		image:    image,
-		artifact: artifact,
+		id:            id,
+		image:         image,
+		artifact:      artifact,
+		authorization: authorization,
 	}
 
 	s.mu.Lock()
@@ -157,6 +160,7 @@ func (s *Service) execute(
 			context.Background(),
 			req.image,
 			&req.artifact,
+			req.authorization,
 		)
 	}
 

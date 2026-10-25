@@ -32,8 +32,10 @@ func New(s *scanner.Service) http.Handler {
 
 type scanRequest struct {
 	Registry struct {
-		URL string `json:"url"`
+		URL           string `json:"url"`
+		Authorization string `json:"authorization"`
 	} `json:"registry"`
+
 	Artifact converter.Artifact `json:"artifact"`
 }
 
@@ -53,7 +55,6 @@ func (h *Handler) metadata(w http.ResponseWriter, r *http.Request) {
 		},
 		"capabilities": []interface{}{
 			map[string]interface{}{
-				"type": "vulnerability",
 				"consumes_mime_types": []string{
 					"application/vnd.oci.image.manifest.v1+json",
 					"application/vnd.docker.distribution.manifest.v2+json",
@@ -93,11 +94,15 @@ func (h *Handler) scan(w http.ResponseWriter, r *http.Request) {
 		req.Artifact,
 	)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, "unable to submit scan", http.StatusInternalServerError)
 		return
 	}
 
-	id, err := h.scanner.Submit(req.Artifact, image)
+	id, err := h.scanner.Submit(
+		req.Artifact,
+		image,
+		req.Registry.Authorization,
+	)
 
 	if err != nil {
 		http.Error(w, "scan simulation failed", http.StatusInternalServerError)
