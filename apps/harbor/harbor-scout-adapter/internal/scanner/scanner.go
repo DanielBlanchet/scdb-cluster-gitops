@@ -1,232 +1,231 @@
 package scanner
 
 import (
-  "context"
-  "crypto/rand"
-  "encoding/hex"
-  "fmt"
-  "os"
-  "strings"
-  "sync"
-  "time"
+	"context"
+	"crypto/rand"
+	"encoding/hex"
+	"fmt"
+	"os"
+	"strings"
+	"sync"
+	"time"
 
-  "harbor-scout-adapter/internal/converter"
+	"harbor-scout-adapter/internal/converter"
 )
 
 type Status string
 
 const (
-  Pending   Status = "pending"
-  Running   Status = "running"
-  Completed Status = "completed"
-  Failed    Status = "failed"
+	Pending   Status = "pending"
+	Running   Status = "running"
+	Completed Status = "completed"
+	Failed    Status = "failed"
 )
 
 type Job struct {
-  Status    Status
-  Report    *converter.Report
-  Error     string
-  CreatedAt time.Time
-  UpdatedAt time.Time
+	Status    Status
+	Report    *converter.Report
+	Error     string
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 type request struct {
-  id       string
-  image    string
-  artifact converter.Artifact
+	id       string
+	image    string
+	artifact converter.Artifact
 }
 
 type Service struct {
-  mu        sync.RWMutex
-  jobs      map[string]Job
-  queue     chan request
-  sarifPath string
-  scout     *Scout
-  ttl       time.Duration
+	mu        sync.RWMutex
+	jobs      map[string]Job
+	queue     chan request
+	sarifPath string
+	scout     *Scout
+	ttl       time.Duration
 }
 
 func New(sarifPath string) *Service {
-  return newService(sarifPath, nil)
+	return newService(sarifPath, nil)
 }
 
 func NewLive() *Service {
-  return newService("", NewScout())
+	return newService("", NewScout())
 }
 
 func newService(path string, scout *Scout) *Service {
-  s := &Service{
-    jobs:      make(map[string]Job),
-    queue:     make(chan request, 16),
-    sarifPath: path,
-    scout:     scout,
-    ttl:       time.Hour,
-  }
+	s := &Service{
+		jobs:      make(map[string]Job),
+		queue:     make(chan request, 16),
+		sarifPath: path,
+		scout:     scout,
+		ttl:       time.Hour,
+	}
 
-  go s.worker()
-  go s.cleanup()
+	go s.worker()
+	go s.cleanup()
 
-  return s
+	return s
 }
 
 func (s *Service) Submit(
-  artifact converter.Artifact,
-  image string,
+	artifact converter.Artifact,
+	image string,
 ) (string, error) {
-  if image == "" {
-    return "", fmt.Errorf("image reference is empty")
-  }
+	if image == "" {
+		return "", fmt.Errorf("image reference is empty")
+	}
 
-  var token [16]byte
-  if _, err := rand.Read(token[:]); err != nil {
-    return "", err
-  }
+	var token [16]byte
+	if _, err := rand.Read(token[:]); err != nil {
+		return "", err
+	}
 
-  id := hex.EncodeToString(token[:])
-  now := time.Now()
+	id := hex.EncodeToString(token[:])
+	now := time.Now()
 
-  req := request{
-    id:       id,
-    image:    image,
-    artifact: artifact,
-  }
+	req := request{
+		id:       id,
+		image:    image,
+		artifact: artifact,
+	}
 
-  s.mu.Lock()
-  defer s.mu.Unlock()
+	s.mu.Lock()
+	defer s.mu.Unlock()
 
-  select {
-  case s.queue <- req:
-    s.jobs[id] = Job{
-      Status:    Pending,
-      CreatedAt: now,
-      UpdatedAt: now,
-    }
-    return id, nil
-  default:
-    return "", fmt.Errorf("scan queue is full")
-  }
+	select {
+	case s.queue <- req:
+		s.jobs[id] = Job{
+			Status:    Pending,
+			CreatedAt: now,
+			UpdatedAt: now,
+		}
+		return id, nil
+	default:
+		return "", fmt.Errorf("scan queue is full")
+	}
 }
 
 func (s *Service) Get(id string) (Job, bool) {
-  s.mu.RLock()
-  defer s.mu.RUnlock()
+	s.mu.RLock()
+	defer s.mu.RUnlock()
 
-  job, ok := s.jobs[id]
-  return job, ok
+	job, ok := s.jobs[id]
+	return job, ok
 }
 
 func (s *Service) update(id string, fn func(*Job)) {
-  s.mu.Lock()
-  defer s.mu.Unlock()
+	s.mu.Lock()
+	defer s.mu.Unlock()
 
-  job, ok := s.jobs[id]
-  if !ok {
-    return
-  }
+	job, ok := s.jobs[id]
+	if !ok {
+		return
+	}
 
-  fn(&job)
-  job.UpdatedAt = time.Now()
-  s.jobs[id] = job
+	fn(&job)
+	job.UpdatedAt = time.Now()
+	s.jobs[id] = job
 }
 
 func (s *Service) worker() {
-  for req := range s.queue {
-    s.update(req.id, func(job *Job) {
-      job.Status = Running
-    })
+	for req := range s.queue {
+		s.update(req.id, func(job *Job) {
+			job.Status = Running
+		})
 
-    report, err := s.execute(req)
+		report, err := s.execute(req)
 
-    s.update(req.id, func(job *Job) {
-      if err != nil {
-        job.Status = Failed
-        job.Error = err.Error()
-        return
-      }
+		s.update(req.id, func(job *Job) {
+			if err != nil {
+				job.Status = Failed
+				job.Error = err.Error()
+				return
+			}
 
-      job.Status = Completed
-      job.Report = report
-    })
-  }
+			job.Status = Completed
+			job.Report = report
+		})
+	}
 }
 
 func (s *Service) execute(
-  req request,
+	req request,
 ) (*converter.Report, error) {
-  if s.scout != nil {
-    return s.scout.Scan(
-      context.Background(),
-      req.image,
-      &req.artifact,
-    )
-  }
+	if s.scout != nil {
+		return s.scout.Scan(
+			context.Background(),
+			req.image,
+			&req.artifact,
+		)
+	}
 
-  file, err := os.Open(s.sarifPath)
-  if err != nil {
-    return nil, err
-  }
-  defer file.Close()
+	file, err := os.Open(s.sarifPath)
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
 
-  return converter.Convert(file, &req.artifact)
+	return converter.Convert(file, &req.artifact)
 }
 
 func (s *Service) cleanup() {
-  ticker := time.NewTicker(5 * time.Minute)
-  defer ticker.Stop()
+	ticker := time.NewTicker(5 * time.Minute)
+	defer ticker.Stop()
 
-  for range ticker.C {
-    cutoff := time.Now().Add(-s.ttl)
+	for range ticker.C {
+		cutoff := time.Now().Add(-s.ttl)
 
-    s.mu.Lock()
-    for id, job := range s.jobs {
-      if (job.Status == Completed ||
-        job.Status == Failed) &&
-        job.UpdatedAt.Before(cutoff) {
-        delete(s.jobs, id)
-      }
-    }
-    s.mu.Unlock()
-  }
+		s.mu.Lock()
+		for id, job := range s.jobs {
+			if (job.Status == Completed ||
+				job.Status == Failed) &&
+				job.UpdatedAt.Before(cutoff) {
+				delete(s.jobs, id)
+			}
+		}
+		s.mu.Unlock()
+	}
 }
 
 // ImageReference builds a registry image reference.
 // Only use registry hosts authorized by the deployment.
 func ImageReference(
-  registryURL string,
-  artifact converter.Artifact,
+	registryURL string,
+	artifact converter.Artifact,
 ) (string, error) {
-  host := strings.TrimPrefix(registryURL, "https://")
-  host = strings.TrimPrefix(host, "http://")
-  host = strings.TrimSuffix(host, "/")
+	host := strings.TrimPrefix(registryURL, "https://")
+	host = strings.TrimPrefix(host, "http://")
+	host = strings.TrimSuffix(host, "/")
 
-  if host == "" ||
-    strings.ContainsAny(host, "/@ \t\n") {
-    return "", fmt.Errorf("invalid registry host")
-  }
+	if host == "" ||
+		strings.ContainsAny(host, "/@ \t\n") {
+		return "", fmt.Errorf("invalid registry host")
+	}
 
-  repository := artifact.Repository
-  if repository == "" ||
-    strings.HasPrefix(repository, "/") ||
-    strings.Contains(repository, "..") ||
-    strings.ContainsAny(repository, "@ \t\n") {
-    return "", fmt.Errorf("invalid repository")
-  }
+	repository := artifact.Repository
+	if repository == "" ||
+		strings.HasPrefix(repository, "/") ||
+		strings.Contains(repository, "..") ||
+		strings.ContainsAny(repository, "@ \t\n") {
+		return "", fmt.Errorf("invalid repository")
+	}
 
-  if artifact.Digest == "" {
-    return "", fmt.Errorf("missing artifact digest")
-  }
+	if artifact.Digest == "" {
+		return "", fmt.Errorf("missing artifact digest")
+	}
 
-  if !strings.HasPrefix(artifact.Digest, "sha256:") ||
-    len(artifact.Digest) != 71 {
-    return "", fmt.Errorf("invalid SHA256 digest")
-  }
+	if !strings.HasPrefix(artifact.Digest, "sha256:") ||
+		len(artifact.Digest) != 71 {
+		return "", fmt.Errorf("invalid SHA256 digest")
+	}
 
-  for _, c := range artifact.Digest[7:] {
-    if !strings.ContainsRune("0123456789abcdefABCDEF", c) {
-      return "", fmt.Errorf("invalid SHA256 digest")
-    }
-  }
+	for _, c := range artifact.Digest[7:] {
+		if !strings.ContainsRune("0123456789abcdefABCDEF", c) {
+			return "", fmt.Errorf("invalid SHA256 digest")
+		}
+	}
 
-  return host + "/" + repository + "@" +
-    artifact.Digest, nil
+	return host + "/" + repository + "@" +
+		artifact.Digest, nil
 }
-
