@@ -88,7 +88,17 @@ func (h *Handler) scan(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	id, err := h.scanner.Submit(req.Artifact)
+	image, err := scanner.ImageReference(
+		req.Registry.URL,
+		req.Artifact,
+	)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	id, err := h.scanner.Submit(req.Artifact, image)
+
 	if err != nil {
 		http.Error(w, "scan simulation failed", http.StatusInternalServerError)
 		return
@@ -131,14 +141,38 @@ func (h *Handler) report(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, ok := h.scanner.Get(id)
+	job, ok := h.scanner.Get(id)
 	if !ok {
 		http.NotFound(w, r)
 		return
 	}
 
-	w.Header().Set("Content-Type", converter.ReportMimeType)
-	writeJSON(w, http.StatusOK, result)
+	switch job.Status {
+	case scanner.Pending, scanner.Running:
+		w.Header().Set("Retry-After", "5")
+		w.WriteHeader(http.StatusFound)
+
+	case scanner.Failed:
+		http.Error(
+			w,
+			"scan failed",
+			http.StatusInternalServerError,
+		)
+
+	case scanner.Completed:
+		w.Header().Set(
+			"Content-Type",
+			converter.ReportMimeType,
+		)
+		writeJSON(w, http.StatusOK, job.Report)
+
+	default:
+		http.Error(
+			w,
+			"unknown job state",
+			http.StatusInternalServerError,
+		)
+	}
 }
 
 func writeJSON(w http.ResponseWriter, status int, value interface{}) {
