@@ -46,6 +46,34 @@ func (s *Scout) Scan(
 
 	sarifPath := filepath.Join(tmpDir, "report.sarif")
 
+	// Configuration Docker de base.
+	// Elle peut provenir d'un Secret Kubernetes ou d'un fichier local.
+	config := struct {
+		Auths       map[string]map[string]string `json:"auths"`
+		CredsStore  string                       `json:"credsStore,omitempty"`
+		CredHelpers map[string]string            `json:"credHelpers,omitempty"`
+	}{
+		Auths: make(map[string]map[string]string),
+	}
+
+	baseConfigPath := os.Getenv("SCOUT_DOCKER_CONFIG")
+
+	if baseConfigPath != "" {
+		data, err := os.ReadFile(baseConfigPath)
+		if err != nil {
+			return nil, fmt.Errorf("reading Docker Scout config: %w", err)
+		}
+
+		if err := json.Unmarshal(data, &config); err != nil {
+			return nil, fmt.Errorf("invalid Docker Scout config: %w", err)
+		}
+	}
+
+	if config.Auths == nil {
+		config.Auths = make(map[string]map[string]string)
+	}
+
+	// Ajouter les identifiants Harbor pour cette analyse.
 	if authorization != "" {
 		const prefix = "Basic "
 
@@ -66,18 +94,14 @@ func (s *Scout) Scan(
 
 		registry := strings.SplitN(image, "/", 2)[0]
 
-		config := struct {
-			Auths      map[string]map[string]string `json:"auths"`
-			CredsStore string                       `json:"credsStore,omitempty"`
-		}{
-			Auths: map[string]map[string]string{
-				registry: {
-					"auth": base64.StdEncoding.EncodeToString(credentials),
-				},
-			},
-			CredsStore: "desktop",
+		config.Auths[registry] = map[string]string{
+			"auth": base64.StdEncoding.EncodeToString(credentials),
 		}
+	}
 
+	// Écrire la configuration temporaire.
+	// Chaque analyse possède son propre répertoire.
+	if baseConfigPath != "" || authorization != "" {
 		data, err := json.Marshal(config)
 		if err != nil {
 			return nil, err
@@ -102,7 +126,8 @@ func (s *Scout) Scan(
 		"registry://"+image,
 	)
 
-	if authorization != "" {
+	// Utiliser la configuration temporaire lorsqu'elle existe.
+	if baseConfigPath != "" || authorization != "" {
 		cmd.Env = append(
 			os.Environ(),
 			"DOCKER_CONFIG="+tmpDir,
@@ -114,8 +139,12 @@ func (s *Scout) Scan(
 
 	if err := cmd.Run(); err != nil {
 		if ctx.Err() != nil {
-			return nil, fmt.Errorf("Docker Scout timeout or cancellation: %w", ctx.Err())
+			return nil, fmt.Errorf(
+				"Docker Scout timeout or cancellation: %w",
+				ctx.Err(),
+			)
 		}
+
 		return nil, fmt.Errorf(
 			"Docker Scout failed: %w: %s",
 			err,
