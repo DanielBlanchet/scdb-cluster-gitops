@@ -7,5 +7,5 @@ apps/WebTs/base/Secrets/webts-config-cfg.yml
 apps/Crypto-Trader/base/Secrets/mysql-db-connect.yml
 apps/Crypto-Trader/base/Secrets/web-config-cfg.yml
 apps/Crypto-Trader/base/Secrets/my-cnf-backup.yaml
-apps/harbor/harbor-scout-adapter/.local/docker-config.json
+apps/harbor/harbor-scout-adapter/.local
 apps/harbor/harbor-scout-adapter/harbor-scout

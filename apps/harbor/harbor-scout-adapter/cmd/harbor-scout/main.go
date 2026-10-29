@@ -13,7 +13,7 @@ import (
 func main() {
 	addr := flag.String(
 		"listen",
-		"127.0.0.1:8080",
+		"0.0.0.0:8080",
 		"HTTP listen address",
 	)
 

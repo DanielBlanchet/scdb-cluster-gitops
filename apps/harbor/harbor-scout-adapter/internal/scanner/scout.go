@@ -44,6 +44,16 @@ func (s *Scout) Scan(
 	}
 	defer os.RemoveAll(tmpDir)
 
+	// Réutiliser le cache Docker Scout persistant.
+	if cachePath := os.Getenv("SCOUT_CACHE_DIR"); cachePath != "" {
+		if err := os.Symlink(
+			cachePath,
+			filepath.Join(tmpDir, "scout"),
+		); err != nil {
+			return nil, fmt.Errorf("linking Docker Scout cache: %w", err)
+		}
+	}
+
 	sarifPath := filepath.Join(tmpDir, "report.sarif")
 
 	// Configuration Docker de base.
