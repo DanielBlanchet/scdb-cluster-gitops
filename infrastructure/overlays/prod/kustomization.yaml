@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - ../../base
   - Gateway.yaml
+  - ConfigMap/coredns-custom.yaml
