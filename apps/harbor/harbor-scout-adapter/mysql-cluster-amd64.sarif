@@ -1,0 +1,326 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/main/sarif-2.1/schema/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "fullName": "Docker Scout",
+          "informationUri": "https://docker.com/products/docker-scout",
+          "name": "docker scout",
+          "rules": [
+            {
+              "id": "CVE-2026-1703",
+              "name": "OsPackageVulnerability",
+              "shortDescription": {
+                "text": "CVE-2026-1703: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')"
+              },
+              "helpUri": "https://scout.docker.com/v/CVE-2026-1703?s=github&n=pip&t=pypi&vr=%3C26.0",
+              "help": {
+                "text": "When pip is installing and extracting a maliciously crafted wheel archive, files may be extracted outside the installation directory. The path traversal is limited to prefixes of the installation directory, thus isn't able to inject or overwrite executable files in typical situations.\n",
+                "markdown": "> When pip is installing and extracting a maliciously crafted wheel archive, files may be extracted outside the installation directory. The path traversal is limited to prefixes of the installation directory, thus isn't able to inject or overwrite executable files in typical situations.\n\n|                                                                                                                     |\n|Package                                                                                           pkg:pypi/pip@25.2  |\n|Affected range                                                                                    <26.0              |\n|Fixed version                                                                                     26.0               |\n|[[CVSS Score 2.0] [CVSS Vector CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:A/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N]]                     |\n"
+              },
+              "properties": {
+                "affected_version": "<26.0",
+                "cvssV3": 2,
+                "cvssV3_severity": "LOW",
+                "cvssV3_vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:A/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N",
+                "fixed_version": "26.0",
+                "purls": [
+                  "pkg:pypi/pip@25.2"
+                ],
+                "security-severity": "2.0",
+                "tags": [
+                  "LOW"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-8643",
+              "name": "OsPackageVulnerability",
+              "shortDescription": {
+                "text": "CVE-2026-8643: Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')"
+              },
+              "helpUri": "https://scout.docker.com/v/CVE-2026-8643?s=github&n=pip&t=pypi&vr=%3C26.1.2",
+              "help": {
+                "text": "pip would treat console_scripts and gui_scripts as paths instead of file names without sanitizing the resolved absolute path to the installation directory, leading to entry points being installed outside the installation directory.\n",
+                "markdown": "> pip would treat console_scripts and gui_scripts as paths instead of file names without sanitizing the resolved absolute path to the installation directory, leading to entry points being installed outside the installation directory.\n\n|                                                                                                                     |\n|Package                                                                                           pkg:pypi/pip@25.2  |\n|Affected range                                                                                    <26.1.2            |\n|Fixed version                                                                                     26.1.2             |\n|[[CVSS Score 4.1] [CVSS Vector CVSS:4.0/AV:L/AC:L/AT:P/PR:L/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N]]                     |\n"
+              },
+              "properties": {
+                "affected_version": "<26.1.2",
+                "cvssV3": 4.1,
+                "cvssV3_severity": "MEDIUM",
+                "cvssV3_vector": "CVSS:4.0/AV:L/AC:L/AT:P/PR:L/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N",
+                "fixed_version": "26.1.2",
+                "purls": [
+                  "pkg:pypi/pip@25.2"
+                ],
+                "security-severity": "4.1",
+                "tags": [
+                  "MEDIUM"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-3219",
+              "name": "OsPackageVulnerability",
+              "shortDescription": {
+                "text": "CVE-2026-3219: Unrestricted Upload of File with Dangerous Type"
+              },
+              "helpUri": "https://scout.docker.com/v/CVE-2026-3219?s=github&n=pip&t=pypi&vr=%3C%3D26.0.1",
+              "help": {
+                "text": "pip handles concatenated tar and ZIP files as ZIP files regardless of filename or whether a file is both a tar and ZIP file. This behavior could result in confusing installation behavior, such as installing \"incorrect\" files according to the filename of the archive. New behavior only proceeds with installation if the file identifies uniquely as a ZIP or tar archive, not as both.\n",
+                "markdown": "> pip handles concatenated tar and ZIP files as ZIP files regardless of filename or whether a file is both a tar and ZIP file. This behavior could result in confusing installation behavior, such as installing \"incorrect\" files according to the filename of the archive. New behavior only proceeds with installation if the file identifies uniquely as a ZIP or tar archive, not as both.\n\n|                                                                                                                     |\n|Package                                                                                           pkg:pypi/pip@25.2  |\n|Affected range                                                                                    <=26.0.1           |\n|Fixed version                                                                                     26.1               |\n|[[CVSS Score 4.6] [CVSS Vector CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:A/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N]]                     |\n"
+              },
+              "properties": {
+                "affected_version": "<=26.0.1",
+                "cvssV3": 4.6,
+                "cvssV3_severity": "MEDIUM",
+                "cvssV3_vector": "CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:A/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N",
+                "fixed_version": "26.1",
+                "purls": [
+                  "pkg:pypi/pip@25.2"
+                ],
+                "security-severity": "4.6",
+                "tags": [
+                  "MEDIUM"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-6357",
+              "name": "OsPackageVulnerability",
+              "shortDescription": {
+                "text": "CVE-2026-6357: Inclusion of Functionality from Untrusted Control Sphere"
+              },
+              "helpUri": "https://scout.docker.com/v/CVE-2026-6357?s=github&n=pip&t=pypi&vr=%3C26.1",
+              "help": {
+                "text": "pip prior to version 26.1 would run self-update check functionality after installing wheel files which required importing well-known Python modules names. These module imports were intentionally deferred to increase startup time of the pip CLI. The patch changes self-update functionality to run before wheels are installed to prevent newly-installed modules from being imported shortly after the installation of a wheel package. Users should still review package contents prior to installation.\n",
+                "markdown": "> pip prior to version 26.1 would run self-update check functionality after installing wheel files which required importing well-known Python modules names. These module imports were intentionally deferred to increase startup time of the pip CLI. The patch changes self-update functionality to run before wheels are installed to prevent newly-installed modules from being imported shortly after the installation of a wheel package. Users should still review package contents prior to installation.\n\n|                                                                                                                     |\n|Package                                                                                           pkg:pypi/pip@25.2  |\n|Affected range                                                                                    <26.1              |\n|Fixed version                                                                                     26.1               |\n|[[CVSS Score 5.3] [CVSS Vector CVSS:4.0/AV:L/AC:L/AT:P/PR:H/UI:A/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N]]                     |\n"
+              },
+              "properties": {
+                "affected_version": "<26.1",
+                "cvssV3": 5.3,
+                "cvssV3_severity": "MEDIUM",
+                "cvssV3_vector": "CVSS:4.0/AV:L/AC:L/AT:P/PR:H/UI:A/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N",
+                "fixed_version": "26.1",
+                "purls": [
+                  "pkg:pypi/pip@25.2"
+                ],
+                "security-severity": "5.3",
+                "tags": [
+                  "MEDIUM"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2026-13346",
+              "name": "OsPackageVulnerability",
+              "shortDescription": {
+                "text": "CVE-2026-13346: Absolute Path Traversal"
+              },
+              "helpUri": "https://scout.docker.com/v/CVE-2026-13346?s=github&n=pip&t=pypi&vr=%3C26.2.0",
+              "help": {
+                "text": "pip would incorrectly handle doubly-encoded package URLs from indexes allowing for files to be installed to arbitrary locations on disk even when installing wheels.\n\nThis vulnerability requires downloading or installing a package from a malicious package index to succeed, malicious packages alone are not able to exploit this vulnerability. Note that this vulnerability only materially impacts users running `pip download` with the `--only-binary` option as installing source distributions from an untrusted index is already an unsafe operation that executes code during install time.\n",
+                "markdown": "> pip would incorrectly handle doubly-encoded package URLs from indexes allowing for files to be installed to arbitrary locations on disk even when installing wheels.\n\nThis vulnerability requires downloading or installing a package from a malicious package index to succeed, malicious packages alone are not able to exploit this vulnerability. Note that this vulnerability only materially impacts users running `pip download` with the `--only-binary` option as installing source distributions from an untrusted index is already an unsafe operation that executes code during install time.\n\n|                                                                                                                     |\n|Package                                                                                           pkg:pypi/pip@25.2  |\n|Affected range                                                                                    <26.2.0            |\n|Fixed version                                                                                     26.2.0             |\n|[[CVSS Score 5.6] [CVSS Vector CVSS:4.0/AV:N/AC:H/AT:P/PR:H/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N]]                     |\n"
+              },
+              "properties": {
+                "affected_version": "<26.2.0",
+                "cvssV3": 5.6,
+                "cvssV3_severity": "MEDIUM",
+                "cvssV3_vector": "CVSS:4.0/AV:N/AC:H/AT:P/PR:H/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N",
+                "fixed_version": "26.2.0",
+                "purls": [
+                  "pkg:pypi/pip@25.2"
+                ],
+                "security-severity": "5.6",
+                "tags": [
+                  "MEDIUM"
+                ]
+              }
+            },
+            {
+              "id": "CVE-2025-8869",
+              "name": "OsPackageVulnerability",
+              "shortDescription": {
+                "text": "CVE-2025-8869: Improper Link Resolution Before File Access ('Link Following')"
+              },
+              "helpUri": "https://scout.docker.com/v/CVE-2025-8869?s=github&n=pip&t=pypi&vr=%3C%3D25.2",
+              "help": {
+                "text": "When extracting a tar archive pip may not check symbolic links point into the extraction directory if the tarfile module doesn't implement PEP 706. Note that upgrading pip to a \"fixed\" version for this vulnerability doesn't fix all known vulnerabilities that are remediated by using a Python version that implements PEP 706. Note that this is a vulnerability in pip's fallback implementation of tar extraction for Python versions that don't implement PEP 706 and therefore are not secure to all vulnerabilities in the Python 'tarfile' module. If you're using a Python version that implements PEP 706 then pip doesn't use the \"vulnerable\" fallback code. Mitigations include upgrading to a version of pip that includes the fix, upgrading to a Python version that implements PEP 706 (Python >=3.9.17, >=3.10.12, >=3.11.4, or >=3.12), applying the linked patch, or inspecting source distributions (sdists) before installation as is already a best-practice.\n",
+                "markdown": "> When extracting a tar archive pip may not check symbolic links point into the extraction directory if the tarfile module doesn't implement PEP 706. Note that upgrading pip to a \"fixed\" version for this vulnerability doesn't fix all known vulnerabilities that are remediated by using a Python version that implements PEP 706. Note that this is a vulnerability in pip's fallback implementation of tar extraction for Python versions that don't implement PEP 706 and therefore are not secure to all vulnerabilities in the Python 'tarfile' module. If you're using a Python version that implements PEP 706 then pip doesn't use the \"vulnerable\" fallback code. Mitigations include upgrading to a version of pip that includes the fix, upgrading to a Python version that implements PEP 706 (Python >=3.9.17, >=3.10.12, >=3.11.4, or >=3.12), applying the linked patch, or inspecting source distributions (sdists) before installation as is already a best-practice.\n\n|                                                                                                                     |\n|Package                                                                                           pkg:pypi/pip@25.2  |\n|Affected range                                                                                    <=25.2             |\n|Fixed version                                                                                     25.3               |\n|[[CVSS Score 5.9] [CVSS Vector CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N]]                     |\n"
+              },
+              "properties": {
+                "affected_version": "<=25.2",
+                "cvssV3": 5.9,
+                "cvssV3_severity": "MEDIUM",
+                "cvssV3_vector": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N",
+                "fixed_version": "25.3",
+                "purls": [
+                  "pkg:pypi/pip@25.2"
+                ],
+                "security-severity": "5.9",
+                "tags": [
+                  "MEDIUM"
+                ]
+              }
+            }
+          ],
+          "version": "1.27.0"
+        }
+      },
+      "results": [
+        {
+          "ruleId": "CVE-2026-1703",
+          "ruleIndex": 0,
+          "kind": "fail",
+          "level": "note",
+          "message": {
+            "text": "Vulnerability    :CVE-2026-1703                                                    \nSeverity         :LOW                                                              \nPackage          :pkg:pypi/pip@25.2                                                \nAffected range   :<26.0                                                            \nFixed version    :26.0                                                             \nCVSS Score       :2.0                                                              \nCVSS Vector      :CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:A/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N  \nEPSS Score       :0.004430                                                         \nEPSS Percentile  :0.375480                                                         \n"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "/usr/lib/python3.14/site-packages/pip-25.2.dist-info/METADATA"
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "/usr/lib/python3.14/site-packages/pip-25.2.dist-info/top_level.txt"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-8643",
+          "ruleIndex": 1,
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Vulnerability    :CVE-2026-8643                                                    \nSeverity         :MEDIUM                                                           \nPackage          :pkg:pypi/pip@25.2                                                \nAffected range   :<26.1.2                                                          \nFixed version    :26.1.2                                                           \nCVSS Score       :4.1                                                              \nCVSS Vector      :CVSS:4.0/AV:L/AC:L/AT:P/PR:L/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N  \nEPSS Score       :0.004660                                                         \nEPSS Percentile  :0.394060                                                         \n"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "/usr/lib/python3.14/site-packages/pip-25.2.dist-info/METADATA"
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "/usr/lib/python3.14/site-packages/pip-25.2.dist-info/top_level.txt"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-3219",
+          "ruleIndex": 2,
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Vulnerability    :CVE-2026-3219                                                    \nSeverity         :MEDIUM                                                           \nPackage          :pkg:pypi/pip@25.2                                                \nAffected range   :<=26.0.1                                                         \nFixed version    :26.1                                                             \nCVSS Score       :4.6                                                              \nCVSS Vector      :CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:A/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N  \nEPSS Score       :0.001440                                                         \nEPSS Percentile  :0.033630                                                         \n"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "/usr/lib/python3.14/site-packages/pip-25.2.dist-info/METADATA"
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "/usr/lib/python3.14/site-packages/pip-25.2.dist-info/top_level.txt"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-6357",
+          "ruleIndex": 3,
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Vulnerability    :CVE-2026-6357                                                    \nSeverity         :MEDIUM                                                           \nPackage          :pkg:pypi/pip@25.2                                                \nAffected range   :<26.1                                                            \nFixed version    :26.1                                                             \nCVSS Score       :5.3                                                              \nCVSS Vector      :CVSS:4.0/AV:L/AC:L/AT:P/PR:H/UI:A/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N  \nEPSS Score       :0.001710                                                         \nEPSS Percentile  :0.061360                                                         \n"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "/usr/lib/python3.14/site-packages/pip-25.2.dist-info/METADATA"
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "/usr/lib/python3.14/site-packages/pip-25.2.dist-info/top_level.txt"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2026-13346",
+          "ruleIndex": 4,
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Vulnerability    :CVE-2026-13346                                                   \nSeverity         :MEDIUM                                                           \nPackage          :pkg:pypi/pip@25.2                                                \nAffected range   :<26.2.0                                                          \nFixed version    :26.2.0                                                           \nCVSS Score       :5.6                                                              \nCVSS Vector      :CVSS:4.0/AV:N/AC:H/AT:P/PR:H/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N  \nEPSS Score       :0.002920                                                         \nEPSS Percentile  :0.207260                                                         \n"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "/usr/lib/python3.14/site-packages/pip-25.2.dist-info/METADATA"
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "/usr/lib/python3.14/site-packages/pip-25.2.dist-info/top_level.txt"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "CVE-2025-8869",
+          "ruleIndex": 5,
+          "kind": "fail",
+          "level": "warning",
+          "message": {
+            "text": "Vulnerability    :CVE-2025-8869                                                    \nSeverity         :MEDIUM                                                           \nPackage          :pkg:pypi/pip@25.2                                                \nAffected range   :<=25.2                                                           \nFixed version    :25.3                                                             \nCVSS Score       :5.9                                                              \nCVSS Vector      :CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N  \nEPSS Score       :0.004690                                                         \nEPSS Percentile  :0.397020                                                         \n"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "/usr/lib/python3.14/site-packages/pip-25.2.dist-info/METADATA"
+                }
+              }
+            },
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "/usr/lib/python3.14/site-packages/pip-25.2.dist-info/top_level.txt"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

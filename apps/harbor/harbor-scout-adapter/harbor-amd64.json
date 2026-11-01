@@ -1,0 +1,80 @@
+{
+  "generated_at": "2026-10-25T16:45:24.235559Z",
+  "artifact": {
+    "repository": "scdb/mysql-cluster"
+  },
+  "scanner": {
+    "name": "Docker Scout",
+    "vendor": "Docker",
+    "version": "1.27.0"
+  },
+  "severity": "Medium",
+  "vulnerabilities": [
+    {
+      "id": "CVE-2025-8869",
+      "package": "pip",
+      "version": "25.2",
+      "fix_version": "25.3",
+      "severity": "Medium",
+      "description": "Vulnerability    :CVE-2025-8869                                                    \nSeverity         :MEDIUM                                                           \nPackage          :pkg:pypi/pip@25.2                                                \nAffected range   :\u003c=25.2                                                           \nFixed version    :25.3                                                             \nCVSS Score       :5.9                                                              \nCVSS Vector      :CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N  \nEPSS Score       :0.004690                                                         \nEPSS Percentile  :0.397020                                                         \n",
+      "links": [
+        "https://scout.docker.com/v/CVE-2025-8869?s=github\u0026n=pip\u0026t=pypi\u0026vr=%3C%3D25.2"
+      ]
+    },
+    {
+      "id": "CVE-2026-13346",
+      "package": "pip",
+      "version": "25.2",
+      "fix_version": "26.2.0",
+      "severity": "Medium",
+      "description": "Vulnerability    :CVE-2026-13346                                                   \nSeverity         :MEDIUM                                                           \nPackage          :pkg:pypi/pip@25.2                                                \nAffected range   :\u003c26.2.0                                                          \nFixed version    :26.2.0                                                           \nCVSS Score       :5.6                                                              \nCVSS Vector      :CVSS:4.0/AV:N/AC:H/AT:P/PR:H/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N  \nEPSS Score       :0.002920                                                         \nEPSS Percentile  :0.207260                                                         \n",
+      "links": [
+        "https://scout.docker.com/v/CVE-2026-13346?s=github\u0026n=pip\u0026t=pypi\u0026vr=%3C26.2.0"
+      ]
+    },
+    {
+      "id": "CVE-2026-1703",
+      "package": "pip",
+      "version": "25.2",
+      "fix_version": "26.0",
+      "severity": "Low",
+      "description": "Vulnerability    :CVE-2026-1703                                                    \nSeverity         :LOW                                                              \nPackage          :pkg:pypi/pip@25.2                                                \nAffected range   :\u003c26.0                                                            \nFixed version    :26.0                                                             \nCVSS Score       :2.0                                                              \nCVSS Vector      :CVSS:4.0/AV:N/AC:L/AT:P/PR:L/UI:A/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N  \nEPSS Score       :0.004430                                                         \nEPSS Percentile  :0.375480                                                         \n",
+      "links": [
+        "https://scout.docker.com/v/CVE-2026-1703?s=github\u0026n=pip\u0026t=pypi\u0026vr=%3C26.0"
+      ]
+    },
+    {
+      "id": "CVE-2026-3219",
+      "package": "pip",
+      "version": "25.2",
+      "fix_version": "26.1",
+      "severity": "Medium",
+      "description": "Vulnerability    :CVE-2026-3219                                                    \nSeverity         :MEDIUM                                                           \nPackage          :pkg:pypi/pip@25.2                                                \nAffected range   :\u003c=26.0.1                                                         \nFixed version    :26.1                                                             \nCVSS Score       :4.6                                                              \nCVSS Vector      :CVSS:4.0/AV:L/AC:L/AT:N/PR:N/UI:A/VC:N/VI:L/VA:N/SC:N/SI:N/SA:N  \nEPSS Score       :0.001440                                                         \nEPSS Percentile  :0.033630                                                         \n",
+      "links": [
+        "https://scout.docker.com/v/CVE-2026-3219?s=github\u0026n=pip\u0026t=pypi\u0026vr=%3C%3D26.0.1"
+      ]
+    },
+    {
+      "id": "CVE-2026-6357",
+      "package": "pip",
+      "version": "25.2",
+      "fix_version": "26.1",
+      "severity": "Medium",
+      "description": "Vulnerability    :CVE-2026-6357                                                    \nSeverity         :MEDIUM                                                           \nPackage          :pkg:pypi/pip@25.2                                                \nAffected range   :\u003c26.1                                                            \nFixed version    :26.1                                                             \nCVSS Score       :5.3                                                              \nCVSS Vector      :CVSS:4.0/AV:L/AC:L/AT:P/PR:H/UI:A/VC:H/VI:H/VA:N/SC:N/SI:N/SA:N  \nEPSS Score       :0.001710                                                         \nEPSS Percentile  :0.061360                                                         \n",
+      "links": [
+        "https://scout.docker.com/v/CVE-2026-6357?s=github\u0026n=pip\u0026t=pypi\u0026vr=%3C26.1"
+      ]
+    },
+    {
+      "id": "CVE-2026-8643",
+      "package": "pip",
+      "version": "25.2",
+      "fix_version": "26.1.2",
+      "severity": "Medium",
+      "description": "Vulnerability    :CVE-2026-8643                                                    \nSeverity         :MEDIUM                                                           \nPackage          :pkg:pypi/pip@25.2                                                \nAffected range   :\u003c26.1.2                                                          \nFixed version    :26.1.2                                                           \nCVSS Score       :4.1                                                              \nCVSS Vector      :CVSS:4.0/AV:L/AC:L/AT:P/PR:L/UI:A/VC:N/VI:H/VA:N/SC:N/SI:N/SA:N  \nEPSS Score       :0.004660                                                         \nEPSS Percentile  :0.394060                                                         \n",
+      "links": [
+        "https://scout.docker.com/v/CVE-2026-8643?s=github\u0026n=pip\u0026t=pypi\u0026vr=%3C26.1.2"
+      ]
+    }
+  ]
+}

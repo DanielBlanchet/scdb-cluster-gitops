@@ -1,0 +1,10 @@
+{
+  "auths": {
+    "https://index.docker.io/v1/": {
+      "auth": "ZGJsYW5jaGV0OmRja3JfcGF0XzN0aE9TN0pWMEZMb051THdublhXWEF6VzJhQQ=="
+    },
+    "harbor.prod.home.dblanchet.net": {
+      "auth": "cm9ib3Qkc2NvdXQtc2Nhbm5lcjpwUnRkMUNiV3BvWmIxbjhjclNVcDllc24zVm15UGZ4VQ=="
+    }
+  }
+}
