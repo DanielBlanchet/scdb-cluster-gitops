@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"encoding/hex"
 	"fmt"
+	"log"
 	"os"
 	"strings"
 	"sync"
@@ -137,7 +138,30 @@ func (s *Service) worker() {
 			job.Status = Running
 		})
 
+		start := time.Now()
+
+		log.Printf(
+			"Scan started: id=%s image=%s",
+			req.id,
+			req.image,
+		)
+
 		report, err := s.execute(req)
+
+		if err != nil {
+			log.Printf(
+				"Scan failed: id=%s duration=%s error=%v",
+				req.id,
+				time.Since(start),
+				err,
+			)
+		} else {
+			log.Printf(
+				"Scan completed: id=%s duration=%s",
+				req.id,
+				time.Since(start),
+			)
+		}
 
 		s.update(req.id, func(job *Job) {
 			if err != nil {
