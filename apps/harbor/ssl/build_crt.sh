@@ -2,7 +2,7 @@
 
 # give HARBOR_HOSTNAME a value or give ip_address a value depending on whether your Harbor Instance
 # is exposed via FQDN (Hostname) or an IP address
-# HARBOR_HOSTNAME="harbor.home.dblanchet.net"
+# HARBOR_HOSTNAME="harbor.prod.home.dblanchet.net"
 ip_address="1.2.3.4"
 
 duration=750
