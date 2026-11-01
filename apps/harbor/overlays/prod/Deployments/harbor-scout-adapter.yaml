@@ -1,0 +1,97 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: harbor-scout-adapter
+  namespace: harbor
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: harbor-scout-adapter
+  template:
+    metadata:
+      labels:
+        app: harbor-scout-adapter
+    spec:
+      initContainers:
+        - name: prepare-ca
+          image: alpine:3.22
+          command:
+            - /bin/sh
+            - -ec
+            - |
+              apk add --no-cache ca-certificates
+              cp /etc/ssl/cert.pem /certs/ca-certificates.crt
+              cat /custom-ca/harborCA.crt >> /certs/ca-certificates.crt
+          volumeMounts:
+            - name: harbor-ca
+              mountPath: /custom-ca
+              readOnly: true
+            - name: trusted-ca
+              mountPath: /certs
+
+      containers:
+        - name: harbor-scout-adapter
+          image: harbor.prod.home.dblanchet.net/scdb/harbor-scout-adapter:v0.2.6
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+
+          env:
+            - name: SCOUT_DOCKER_CONFIG
+              value: /etc/harbor-scout/docker/config.json
+            - name: SCOUT_CACHE_DIR
+              value: /root/.docker/scout
+            - name: SSL_CERT_FILE
+              value: /certs/ca-certificates.crt
+
+          volumeMounts:
+            - name: docker-auth
+              mountPath: /etc/harbor-scout/docker
+              readOnly: true
+            - name: trusted-ca
+              mountPath: /certs
+              readOnly: true
+            - name: scout-cache
+              mountPath: /root/.docker/scout
+
+          readinessProbe:
+            httpGet:
+              path: /api/v1/metadata
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /api/v1/metadata
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 30
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+
+      volumes:
+        - name: docker-auth
+          secret:
+            secretName: harbor-scout-docker-auth
+
+        - name: harbor-ca
+          secret:
+            secretName: harbor-scout-ca
+
+        - name: trusted-ca
+          emptyDir: {}
+
+        - name: scout-cache
+          persistentVolumeClaim:
+            claimName: harbor-scout-cache
