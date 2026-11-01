@@ -6,3 +6,4 @@ resources:
   - HTTPRoutes/harbor-secure-route.yaml
   - PersistentVolumeClaim/harbor-scout-cache.yaml
   - Services/harbor-scout-adapter.yaml
+  - Deployments/harbor-scout-adapter.yaml
