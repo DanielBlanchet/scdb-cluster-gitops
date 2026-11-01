@@ -38,8 +38,22 @@ kubectl get crd | grep tlsroute
 kubectl get crd tlsroutes.gateway.networking.k8s.io \
   -o jsonpath='{range .spec.versions[*]}{.name}{" served="}{.served}{" storage="}{.storage}{"\n"}{end}'
 
-# setup de trefick
+# setup de traefick
 docker cp ./traefik-config.yaml ${container}:/var/lib/rancher/k3s/server/manifests/traefik-config.yaml
+
+# Docker Desktop: PATCH  traefick
+
+kubectl -n kube-system patch svc traefik --type=json \
+  -p='[
+    {"op":"replace","path":"/spec/ports/0/port","value":80},
+    {"op":"replace","path":"/spec/ports/1/port","value":443}
+  ]'
+
+kubectl -n kube-system patch svc traefik --type=json \            
+  -p='[
+    {"op":"replace","path":"/spec/ports/0/port","value":18080},
+    {"op":"replace","path":"/spec/ports/1/port","value":18443}
+  ]'
 
 # Setup harbor unsecure.
 docker cp ./registries.yaml ${container}:/etc/rancher/k3s/registries.yaml
