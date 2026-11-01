@@ -17,7 +17,7 @@ RUN CGO_ENABLED=0 GOOS=${TARGETOS} \
 
 # Étape 2 : image d'exécution
 FROM docker:cli
-ARG PKG_VERSION=0.2.6
+ARG PKG_VERSION=0.2.7
 ENV PKGversion=v${PKG_VERSION}
 LABEL org.opencontainers.image.version="${PKG_VERSION}"
 
