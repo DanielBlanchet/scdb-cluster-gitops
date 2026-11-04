@@ -17,12 +17,12 @@ RUN CGO_ENABLED=0 GOOS=${TARGETOS} \
 
 # Étape 2 : image d'exécution
 FROM docker:cli
-ARG PKG_VERSION=0.2.7
+ARG PKG_VERSION=0.3.1
 ENV PKGversion=v${PKG_VERSION}
 LABEL org.opencontainers.image.version="${PKG_VERSION}"
 
 ARG TARGETARCH
-ARG SCOUT_VERSION=1.27.0
+ARG SCOUT_VERSION=1.29.0
 
 RUN apk add --no-cache curl tar \
     && mkdir -p /usr/local/lib/docker/cli-plugins \
