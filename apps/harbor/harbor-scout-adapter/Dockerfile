@@ -11,13 +11,14 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=${TARGETOS} \
-    go build -trimpath -ldflags="-s -w" \
-    -o /out/harbor-scout ./cmd/harbor-scout
+RUN go version && \
+  CGO_ENABLED=0 GOOS=${TARGETOS} \
+  go build -trimpath -ldflags="-s -w" \
+  -o /out/harbor-scout ./cmd/harbor-scout
 
 # Étape 2 : image d'exécution
 FROM docker:cli
-ARG PKG_VERSION=0.3.1
+ARG PKG_VERSION=0.3.2
 ENV PKGversion=v${PKG_VERSION}
 LABEL org.opencontainers.image.version="${PKG_VERSION}"
 

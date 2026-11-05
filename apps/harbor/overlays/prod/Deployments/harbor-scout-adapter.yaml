@@ -34,7 +34,7 @@ spec:
 
       containers:
         - name: harbor-scout-adapter
-          image: harbor.prod.home.dblanchet.net/scdb/harbor-scout-adapter:v0.3.1
+          image: harbor.prod.home.dblanchet.net/scdb/harbor-scout-adapter:v0.3.2
           imagePullPolicy: IfNotPresent
           ports:
             - name: http

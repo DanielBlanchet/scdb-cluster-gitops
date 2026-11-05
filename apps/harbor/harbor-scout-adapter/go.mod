@@ -1,3 +1,3 @@
 module harbor-scout-adapter
 
-go 1.23
+go 1.26
